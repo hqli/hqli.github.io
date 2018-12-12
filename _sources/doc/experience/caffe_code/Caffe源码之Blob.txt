@@ -1,0 +1,193 @@
+Caffe的Blob
+************
+
+概述
+=======
+* Blob：是基础的数据结构，用来保存学习到的参数以及网络传输过程中产生数据。
+* Layer：是网络的基本单元，由此派生出了各种层。
+* Net：是网络的搭建，将Layer所派生出层类组合成网络。
+* Solver：是Net的求解。
+
+Blob
+=====
+
+源码文件
+^^^^^^^^
+* include/blob.hpp
+* src/blob.cpp
+
+整体概览
+^^^^^^^^^
+
+::
+
+	template <typename Dtype>
+	class Blob {
+	 public:
+	  Blob()
+	       : data_(), diff_(), count_(0), capacity_(0) {}
+
+	  explicit Blob(const int num, const int channels, const int height,
+		      const int width);
+	  explicit Blob(const vector<int>& shape);
+	  void Reshape(const vector<int>& shape);
+	  void Reshape(const BlobShape& shape);
+	  inline int count() const { return count_; }
+	  ...
+
+	 protected:
+	  shared_ptr<SyncedMemory> data_;
+	  shared_ptr<SyncedMemory> diff_;
+	  shared_ptr<SyncedMemory> shape_data_;
+	  vector<int> shape_;
+	  int count_;
+	  int capacity_;
+	  DISABLE_COPY_AND_ASSIGN(Blob);
+	}
+
+成员变量
+^^^^^^^^^
+
+::
+
+	protected:
+	  shared_ptr<SyncedMemory> data_;
+	  shared_ptr<SyncedMemory> diff_;
+	  shared_ptr<SyncedMemory> shape_data_;
+	  vector<int> shape_;
+	  int count_;
+	  int capacity_;
+* BLob只是一个基本的数据结构，因此内部的变量相对较少。
+* 首先是data_指针，指针类型是shared_ptr，属于boost库的一个智能指针，这一部分主要用来申请内存存储data，data主要是正向传播的时候用的。
+* 同理，diff_主要用来存储偏差，update data，shape_data和shape_都是存储Blob的形状，一个是老版本一个是新版本。
+* count表示Blob中的元素个数，也就是个数*通道数*高度*宽度,capacity表示当前的元素个数，因为Blob可能会reshape。
+
+成员函数
+^^^^^^^^^
+::
+
+	  Blob()
+	       : data_(), diff_(), count_(0), capacity_(0) {}
+
+	  explicit Blob(const int num, const int channels, const int height,
+		      const int width);
+	  explicit Blob(const vector<int>& shape);
+``Blob`` 作为一个最基础的类，其中构造函数开辟一个内存空间来存储数据。
+
+::
+
+	  void Reshape(const vector<int>& shape);
+	  void Reshape(const BlobShape& shape);
+``Reshape`` 函数在Layer中的reshape或者forward操作中来adjust dimension。同时在改变Blob大小时，内存将会被重新分配如果内存大小不够了，并且额外的内存将不会被释放。
+
+::
+
+	inline int count() const { return count_; }
+	inline int count(int start_axis, int end_axis) const
+	inline int count(int start_axis) const
+Blob类里面有重载很多个count()函数，主要还是为了统计Blob的容量（volume），或者是某一片（slice），从某个axis到具体某个axis的shape乘积。
+
+::
+
+	inline int CanonicalAxisIndex(int axis_index)``
+
+对于Blob中的4个基本变量num,channel,height,width可以直接通过shape(0),shape(1),shape(2),shape(3)来访问。
+
+::
+	
+	inline int offset(const int n, const int c = 0, const int h = 0, const int w = 0)
+	inline int offset(const vector<int>& indices)
+offset计算的方式也支持两种方式，一种直接指定n,c,h,w或者放到一个vector中进行计算，偏差是根据对应的n,c,h,w，返回的offset是
+``((n * channels() + c) * height() + h) * width() + w``
+
+::
+
+	void CopyFrom(const Blob<Dtype>& source, bool copy_diff = false,bool reshape = false);``
+
+从一个blob中copy数据 ，通过开关控制是否copy_diff,如果是False则copy data。reshape控制是否需要reshape。
+
+::
+	
+	inline Dtype data_at(const int n, const int c, const int h, const int w)
+	inline Dtype diff_at(const int n, const int c, const int h, const int w)
+	inline Dtype data_at(const vector<int>& index)
+	inline Dtype diff_at(const vector<int>& index)
+	inline const shared_ptr<SyncedMemory>& data()
+	inline const shared_ptr<SyncedMemory>& diff()
+
+这一部分函数主要通过给定的位置访问数据，根据位置计算与数据起始的偏差offset，再通过cpu_data*指针获得地址。下面几个函数都是获得
+
+::
+	
+	const Dtype* cpu_data() const;
+	void set_cpu_data(Dtype* data);
+	const int* gpu_shape() const;
+	const Dtype* gpu_data() const;
+	const Dtype* cpu_diff() const;
+	const Dtype* gpu_diff() const;
+	Dtype* mutable_cpu_data();
+	Dtype* mutable_gpu_data();
+	Dtype* mutable_cpu_diff();
+	Dtype* mutable_gpu_diff();
+可以看到这里有data和diff两类数据，而这个diff就是我们所熟知的偏差，前者主要存储前向传递的数据，而后者存储的是反向传播中的梯度
+
+::
+
+	template <typename Dtype>
+	void Blob<Dtype>::Update() {
+	  // We will perform update based on where the data is located.
+	  switch (data_->head()) {
+	  case SyncedMemory::HEAD_AT_CPU:
+	    // perform computation on CPU
+	    caffe_axpy<Dtype>(count_, Dtype(-1),
+	        static_cast<const Dtype*>(diff_->cpu_data()),
+	        static_cast<Dtype*>(data_->mutable_cpu_data()));
+	    break;
+	  case SyncedMemory::HEAD_AT_GPU:
+	  case SyncedMemory::SYNCED:
+	#ifndef CPU_ONLY
+	    // perform computation on GPU
+	    caffe_gpu_axpy<Dtype>(count_, Dtype(-1),
+	        static_cast<const Dtype*>(diff_->gpu_data()),
+	        static_cast<Dtype*>(data_->mutable_gpu_data()));
+	#else
+	    NO_GPU;
+	#endif
+	    break;
+	  default:
+	    LOG(FATAL) << "Syncedmem not initialized.";
+	  }
+	}
+这个函数在caffe的util下面的match-functions.cpp里面，主要是负责了线性代数库的调用，实现的功能是
+``Y = alpha*X+beta*Y``。 即blob里面的data部分减去diff部分
+::
+
+	  void FromProto(const BlobProto& proto, bool reshape = true);
+	  void ToProto(BlobProto* proto, bool write_diff = false) const;
+这两个函数主要是将数据序列化，存储到BlobProto，这里说到Proto是谷歌的一个数据序列化的存储格式，可以实现语言、平台无关、可扩展的序列化结构数据格式。
+
+::
+
+	Dtype asum_data() const;
+	Dtype asum_diff() const;
+	Dtype sumsq_data() const;
+	Dtype sumsq_diff() const;
+	void scale_data(Dtype scale_factor);
+	void scale_diff(Dtype scale_factor);
+asum表示求L1范数，sumsq表示求L2范数，scale表示乘法，乘以一个因子。
+
+::
+
+	void ShareData(const Blob& other);
+	void scale_diff(const Blob& other);
+一个是共享data，一个是共享diff，具体就是将别的blob的data和响应的diff指针给这个Blob，实现数据的共享。同时需要注意的是这个操作会引起这个Blob里面的SyncedMemory被释放，因为shared_ptr指针被用=重置的时候回调用响应的析构器。
+
+::
+
+	bool ShapeEquals(const BlobProto& other);
+比较两个Blob形状是否相同
+
+参考
+=====
+* http://www.cnblogs.com/louyihang-loves-baiyan/
+* https://www.zhihu.com/question/27982282/answer/39350629

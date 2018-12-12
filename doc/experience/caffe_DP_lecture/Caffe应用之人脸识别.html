@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Caffe应用之人脸识别例子 &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="学习方式" href="../study_style/index.html" />
+    <link rel="prev" title="实验室深度学习平台介绍" href="实验室深度学习平台介绍.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../implement/index.html">实现</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">经验</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../caffe_code/index.html">Caffe源码分析及例子</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">实验室深度学习简介</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="实验室深度学习平台介绍.html">实验室深度学习平台介绍</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Caffe应用之人脸识别例子</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../study_style/index.html">学习方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">经验</a> &raquo;</li>
+        
+          <li><a href="index.html">实验室深度学习简介</a> &raquo;</li>
+        
+      <li>Caffe应用之人脸识别例子</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/experience/caffe_DP_lecture/Caffe应用之人脸识别.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="caffe">
+<h1>Caffe应用之人脸识别例子<a class="headerlink" href="#caffe" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>通过例子亲自操刀能更快的使用Caffe，本节重点讲使用Caffe进行人脸识别。</p>
+<p>可以访问我的github获取源码https:://hqli.github.com</p>
+</div>
+<div class="section" id="id2">
+<h2>流程<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<img alt="../../../_images/face_recognition_process.png" src="../../../_images/face_recognition_process.png" />
+</div>
+<div class="section" id="id3">
+<h2>具体操作<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p><strong>编译caffe</strong></p>
+<p>根据官方教程</p>
+<p><strong>训练测试阶段</strong></p>
+<ul>
+<li><p class="first">将数据转换成caffe支持的格式（lmdb）</p>
+<blockquote>
+<div><ul class="simple">
+<li>使用caffe自带的转换程序build/tools/convert_imageset</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">配置网络</p>
+<blockquote>
+<div><ul>
+<li><p class="first">XXX_net.prototxt</p>
+</li>
+<li><p class="first">网络图</p>
+<blockquote>
+<div><ul>
+<li><img alt="../../../_images/deepID_net.png" class="first" src="../../../_images/deepID_net.png" />
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">配置解决方案</p>
+<blockquote>
+<div><ul class="simple">
+<li>XXX_solver.prototxt</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">运行</p>
+<blockquote>
+<div><ul>
+<li><p class="first">训练</p>
+<blockquote>
+<div><ul class="simple">
+<li>build/tools/caffe train --solver=XXX_solver.prototxt 2&gt;&amp;1 <a href="#id4"><span class="problematic" id="id5">|</span></a>tee XXX.log</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">测试</p>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>部署阶段</strong></p>
+<ul>
+<li><p class="first">数据输入</p>
+<blockquote>
+<div><ul class="simple">
+<li>指定number、channel、height、width</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">配置网络</p>
+<blockquote>
+<div><ul>
+<li><p class="first">XXX_deploy_net.prototxt</p>
+</li>
+<li><p class="first">网络图</p>
+<blockquote>
+<div><ul>
+<li><img alt="../../../_images/deepID_deploy_net.png" class="first" src="../../../_images/deepID_deploy_net.png" />
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">配置解决方案</p>
+<blockquote>
+<div><ul class="simple">
+<li>XXX_deploy.prototxt</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">执行</p>
+<blockquote>
+<div><ul class="simple">
+<li>Python接口</li>
+<li>caffe.Classifier(XXX_deploy_net.ptototxt, XXX.caffemodel, mean)</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h2>训练结果<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>通过解析日志文件XXX.log来获取。使用caffe自带的日志解析脚本。tools/extra/plot_training_log.py</p>
+<img alt="../../../_images/face_recognition_train_loss_iters.png" src="../../../_images/face_recognition_train_loss_iters.png" />
+<img alt="../../../_images/face_recognition_test_loss_iters.png" src="../../../_images/face_recognition_test_loss_iters.png" />
+<img alt="../../../_images/face_recognition_train_learning_iters.png" src="../../../_images/face_recognition_train_learning_iters.png" />
+<img alt="../../../_images/face_recognition_test_accuracy_iters.png" src="../../../_images/face_recognition_test_accuracy_iters.png" />
+<p>Test accuracy是类的准确率(共1万类)。</p>
+</div>
+<div class="section" id="id7">
+<h2>特征图<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>获取每一层的特征图。
+配置好部署阶段的网络（将训练测试阶段的Net修改输入，去掉最后的loss层），依次获取每层的特征。</p>
+<p><strong>================以下是数据层================</strong></p>
+<img alt="../../../_images/face_recognition_data_feature.png" src="../../../_images/face_recognition_data_feature.png" />
+<p><strong>================以下是卷积层1===============</strong></p>
+<img alt="../../../_images/face_recognition_conv1_feature.png" src="../../../_images/face_recognition_conv1_feature.png" />
+<p><strong>================以下是卷积层2===============</strong></p>
+<img alt="../../../_images/face_recognition_conv2_feature.png" src="../../../_images/face_recognition_conv2_feature.png" />
+<p><strong>================以下是卷积层3===============</strong></p>
+<img alt="../../../_images/face_recognition_conv3_feature.png" src="../../../_images/face_recognition_conv3_feature.png" />
+<p><strong>================以下是卷积层4===============</strong></p>
+<img alt="../../../_images/face_recognition_conv4_feature.png" src="../../../_images/face_recognition_conv4_feature.png" />
+</div>
+<div class="section" id="id8">
+<h2>详细解析<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>详细分析每一个网络的变化</p>
+<p><strong>论文网络</strong></p>
+<img alt="../../../_images/deepID_theame_net.png" src="../../../_images/deepID_theame_net.png" />
+<p><strong>论文网络每层分析</strong></p>
+<p><strong>================以下是第一部分===============</strong></p>
+<img alt="../../../_images/deepID_detail_analyse_1.png" src="../../../_images/deepID_detail_analyse_1.png" />
+<p><strong>================以下是第二部分===============</strong></p>
+<img alt="../../../_images/deepID_detail_analyse_2.png" src="../../../_images/deepID_detail_analyse_2.png" />
+<p><strong>================以下是第三部分===============</strong></p>
+<img alt="../../../_images/deepID_detail_analyse_3.png" src="../../../_images/deepID_detail_analyse_3.png" />
+<p><strong>实际网络每层分析</strong></p>
+<p><strong>================以下是第一部分===============</strong></p>
+<img alt="../../../_images/deepID_real_detail_analyse_1.png" src="../../../_images/deepID_real_detail_analyse_1.png" />
+<p><strong>================以下是第二部分===============</strong></p>
+<img alt="../../../_images/deepID_real_detail_analyse_2.png" src="../../../_images/deepID_real_detail_analyse_2.png" />
+<p><strong>================以下是第三部分===============</strong></p>
+<img alt="../../../_images/deepID_real_detail_analyse_3.png" src="../../../_images/deepID_real_detail_analyse_3.png" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../study_style/index.html" class="btn btn-neutral float-right" title="学习方式" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="实验室深度学习平台介绍.html" class="btn btn-neutral" title="实验室深度学习平台介绍" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

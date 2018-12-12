@@ -1,0 +1,138 @@
+Caffe应用之人脸识别例子
+***********************
+
+概述
+=======
+通过例子亲自操刀能更快的使用Caffe，本节重点讲使用Caffe进行人脸识别。
+
+可以访问我的github获取源码https:://hqli.github.com
+
+流程
+=====
+
+.. image:: images/face_recognition_process.png
+
+具体操作
+========
+**编译caffe**
+
+根据官方教程
+
+**训练测试阶段**
+
+- 将数据转换成caffe支持的格式（lmdb）
+
+	- 使用caffe自带的转换程序build/tools/convert_imageset
+- 配置网络
+
+	- XXX_net.prototxt
+	- 网络图
+
+		- .. image:: images/deepID_net.png
+- 配置解决方案
+
+	- XXX_solver.prototxt
+- 运行
+
+	- 训练
+
+		- build/tools/caffe train --solver=XXX_solver.prototxt 2>&1 |tee XXX.log
+	- 测试
+
+**部署阶段**
+
+- 数据输入
+
+	- 指定number、channel、height、width
+- 配置网络
+
+	- XXX_deploy_net.prototxt
+	- 网络图
+
+		- .. image:: images/deepID_deploy_net.png
+- 配置解决方案
+
+	- XXX_deploy.prototxt
+- 执行
+
+	- Python接口
+	- caffe.Classifier(XXX_deploy_net.ptototxt, XXX.caffemodel, mean)
+
+训练结果
+========
+
+通过解析日志文件XXX.log来获取。使用caffe自带的日志解析脚本。tools/extra/plot_training_log.py
+
+
+.. image:: images/face_recognition_train_loss_iters.png
+
+.. image:: images/face_recognition_test_loss_iters.png
+
+.. image:: images/face_recognition_train_learning_iters.png
+
+.. image:: images/face_recognition_test_accuracy_iters.png
+Test accuracy是类的准确率(共1万类)。
+
+
+特征图
+=======
+
+获取每一层的特征图。
+配置好部署阶段的网络（将训练测试阶段的Net修改输入，去掉最后的loss层），依次获取每层的特征。
+
+**================以下是数据层================**
+
+.. image:: images/face_recognition_data_feature.png
+
+**================以下是卷积层1===============**
+
+.. image:: images/face_recognition_conv1_feature.png
+
+**================以下是卷积层2===============**
+
+.. image:: images/face_recognition_conv2_feature.png
+
+**================以下是卷积层3===============**
+
+.. image:: images/face_recognition_conv3_feature.png
+
+**================以下是卷积层4===============**
+
+.. image:: images/face_recognition_conv4_feature.png
+
+详细解析
+========
+
+详细分析每一个网络的变化
+
+**论文网络**
+
+.. image:: images/deepID_theame_net.png
+
+**论文网络每层分析**
+
+**================以下是第一部分===============**
+
+.. image:: images/deepID_detail_analyse_1.png
+
+**================以下是第二部分===============**
+
+.. image:: images/deepID_detail_analyse_2.png
+
+**================以下是第三部分===============**
+
+.. image:: images/deepID_detail_analyse_3.png
+
+**实际网络每层分析**
+
+**================以下是第一部分===============**
+
+.. image:: images/deepID_real_detail_analyse_1.png
+
+**================以下是第二部分===============**
+
+.. image:: images/deepID_real_detail_analyse_2.png
+
+**================以下是第三部分===============**
+
+.. image:: images/deepID_real_detail_analyse_3.png

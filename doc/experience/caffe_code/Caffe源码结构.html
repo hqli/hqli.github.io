@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Caffe源码结构 &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="Caffe的Blob" href="Caffe源码之Blob.html" />
+    <link rel="prev" title="Windows平台安装Caffe" href="Windows平台安装Caffe.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../implement/index.html">实现</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">经验</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Caffe源码分析及例子</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Windows平台安装Caffe.html">Windows平台安装Caffe</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Caffe源码结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Blob.html">Caffe的Blob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Layer.html">Caffe的Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Net.html">Caffe的Net</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Solver.html">Caffe的Solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe应用之人脸识别.html">Caffe应用之人脸识别例子</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码的前向传播与后向传播.html">Caffe源码的前向传播与后向传播</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../caffe_DP_lecture/index.html">实验室深度学习简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../study_style/index.html">学习方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">经验</a> &raquo;</li>
+        
+          <li><a href="index.html">Caffe源码分析及例子</a> &raquo;</li>
+        
+      <li>Caffe源码结构</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/experience/caffe_code/Caffe源码结构.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="caffe">
+<h1>Caffe源码结构<a class="headerlink" href="#caffe" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>目录结构<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>caffe主目录文件夹如下图所示。</p>
+<img alt="../../../_images/caffe_folders.png" src="../../../_images/caffe_folders.png" />
+<p><strong>核心代码文件夹</strong></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">tools</span></code> 保存的源码是用于生成二进制处理程序的，caffe在训练时实际是直接调用这些二进制文件。</li>
+<li><code class="docutils literal notranslate"><span class="pre">include</span></code> Caffe的实现代码的头文件</li>
+<li><code class="docutils literal notranslate"><span class="pre">src</span></code> 实现Caffe的源文件</li>
+</ul>
+<p><strong>主要文件夹</strong></p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">data</span></code> 用于存放下载的训练数据</li>
+<li><code class="docutils literal notranslate"><span class="pre">docs</span></code> 帮助文档s</li>
+<li><code class="docutils literal notranslate"><span class="pre">example</span></code> 一些代码样例</li>
+<li><code class="docutils literal notranslate"><span class="pre">matlab</span></code> MATLAB接口文件</li>
+<li><code class="docutils literal notranslate"><span class="pre">python</span></code> Python接口文件</li>
+<li><code class="docutils literal notranslate"><span class="pre">model</span></code> 一些配置好的模型参数</li>
+<li><code class="docutils literal notranslate"><span class="pre">scripts</span></code> 一些文档和数据用到的脚本</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>源码结构<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>src文件夹内容如下图所示</p>
+<img alt="../../../_images/caffe_code_src_folder.png" src="../../../_images/caffe_code_src_folder.png" />
+<p>src/caffe文件夹内容如下图所示</p>
+<img alt="../../../_images/caffe_code_src_caffe_folder.png" src="../../../_images/caffe_code_src_caffe_folder.png" />
+<p><code class="docutils literal notranslate"><span class="pre">文件夹</span></code> 表示文件夹</p>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">src</span></code></p>
+<blockquote>
+<div><ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">gtest</span></code> google test一个用于测试的库你make runtest时看见的很多绿色RUN OK就是它，这个与caffe的学习无关，不过是个有用的库</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">caffe</span></code> 关键的代码都在这里了</p>
+<blockquote>
+<div><ul class="simple">
+<li>blob.cpp Blob（存储数据的结构）的实现</li>
+<li>layer.cpp Layer（网络中的层）的锁操作，详细实现在layer文件夹</li>
+<li>net.cpp Net（网络，包含多个层）的实现</li>
+<li>solver.cpp  Solver（训练）的的锁操作，详细实现在solver文件夹</li>
+<li><code class="docutils literal notranslate"><span class="pre">test</span></code> 用gtest测试caffe的代码</li>
+<li><code class="docutils literal notranslate"><span class="pre">util</span></code> 数据转换时用的一些代码。caffe速度快，很大程度得益于内存设计上的优化（blob数据结构采用proto）和对卷积的优化（部分与im2col相关）。</li>
+<li><code class="docutils literal notranslate"><span class="pre">proto</span></code> 即所谓的“Protobuf”，全称“Google Protocol Buffer”，是一种数据存储格式，帮助caffe提速。</li>
+<li><code class="docutils literal notranslate"><span class="pre">layers</span></code> Layer（网络中的层）的实现</li>
+<li><code class="docutils literal notranslate"><span class="pre">solvers</span></code> Solver（训练）的实现</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>源码架构<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>Caffe架构如下图所示</p>
+<img alt="../../../_images/caffe_code_overview.png" src="../../../_images/caffe_code_overview.png" />
+<p>Caffe框架主要有四个组件，Blob，Solver，Net，Layer。</p>
+<ul class="simple">
+<li>Blob是Caffe实际存储数据的结构，是一个不定维的矩阵，在Caffe中一般用来表示一个拉直的四维矩阵，四个维度分别对应Batch Size（N），Feature Map的通道数（C）,Feature Map高度(H)和宽度(W)。</li>
+<li>Layer是Net的基本组成单元，例如一个卷积层或一個池化层。每个Layer的输入和输出Feature map表示为Input Blob和Output Blob。</li>
+<li>每个Net则由若干个Layer构成。</li>
+<li>Solver负责深度网络的训练，每个Solver中包含一个训练网络对象和一个测试网络对象。</li>
+</ul>
+<div class="section" id="id4">
+<h3>工厂模式<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>工厂模式示意图如下图所示</p>
+<img alt="../../../_images/factory_pattern.png" src="../../../_images/factory_pattern.png" />
+<p>Solver和Layer使用了工厂模式。</p>
+<p>拿Layer举例，layer.hpp中的Layer类是总的产品标准，使用virtual修饰函数，layer文件夹中的PoolingLayer、ConcatLayer等类继承Layer类，是Layer类的不同实现。然后layer_factory.hpp中的LayerRegistry类实现了Layer的注册，根据层的名称然后new对应的类返回Layer类型。至此，工厂模式流程完成。</p>
+<p>Layer类如下图所示</p>
+<img alt="../../../_images/layer_hpp_Layer.png" src="../../../_images/layer_hpp_Layer.png" />
+<p>PoolingLayer如下图所示</p>
+<img alt="../../../_images/pooling_layer_hpp_PoolingLayer.png" src="../../../_images/pooling_layer_hpp_PoolingLayer.png" />
+<p>ConcatLayer如下图所示</p>
+<img alt="../../../_images/layer_factory_hpp_LayerRegisterer.png" src="../../../_images/layer_factory_hpp_LayerRegisterer.png" />
+<p>LayerRegistry如下图所示</p>
+<img alt="../../../_images/layer_factory_hpp_LayerRegisterer.png" src="../../../_images/layer_factory_hpp_LayerRegisterer.png" />
+</div>
+</div>
+<div class="section" id="id5">
+<h2>依赖库及其作用<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id6">
+<h3>必须依赖库<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<ul>
+<li><p class="first">CUDA库</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：编写GPU程序，进行GPU加速，深度学习的引擎。</li>
+<li>CUDA（Compute Unified Device Architecture，统一计算架构[1]）是由NVIDIA所推出的一种集成技术，可以利用GPU作为C-编译器的开发环境。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">BLAS库</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：调用基础线性代数函数</li>
+<li>可以选择ATLAS, MKL, or OpenBLAS.</li>
+<li>BLAS（Basic Linear Algebra Subprograms，基础线性代数程序集）是一个应用程序接口（API）标准，用以规范发布基础线性代数操作的数值库（如矢量或矩阵乘法）。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Boost库</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：C++主程序编写</li>
+<li>它是一个可移植、跨平台，提供源代码的C++库，作为标准库的后备。很多性能被C++11，C++14支持，不过有差别。</li>
+<li>shared_ptr.hpp：智能指针，使用它可以不需要考虑内存释放的问题；</li>
+<li>date_time/posix_time/posix_time.hpp：时间操作函数；</li>
+<li>make_shared.hpp：make_shared工厂函数代替new操作符；</li>
+<li>thread.hpp：线程操作；</li>
+<li>math/special_functions/next.hpp：数学函数；</li>
+<li>python.hpp：C++/Python互操作；</li>
+<li>python/raw_function.hpp：C++/Python互操作；</li>
+<li>python/suite/indexing/vector_indexing_suite.hpp：C++/Python互操作；</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">ProtoBuf库：GoogleProtocol Buffer（简称ProtoBuf）</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：用于文本解析，即解析prototxt文件。</li>
+<li>它是一种轻便高效的结构化数据存储格式，可以用于结构化数据串行化，或者说序列化。</li>
+<li>要使用ProtoBuf库，首先需要自己编写一个.proto文件，定义我们程序中需要处理的结构化数据，在protobuf中，结构化数据被称为Message。在一个.proto文件中可以定义多个消息类型。用Protobuf编译器（protoc.exe）将.proto文件编译成目标语言，会生成对应的.h文件和.cc文件，.proto文件中的每一个消息有一个对应的类。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">GLog库</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：日志输出</li>
+<li>它是一个应用程序的日志库，提供基于C++风格的流的日志API，以及各种辅助的宏。它的使用方式与C++的stream操作类似。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">GFlags库</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：处理命令行参数</li>
+<li>它是google的一个开源的处理命令行参数的库，使用C++开发，可以替代getopt函数。GFlags与getopt函数不同，在GFlags中，标记的定义分散在源代码中，不需要列举在一个地方。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">HDF5库：</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：支持的数据库之一</li>
+<li>HDF（HierarchicalData File）是美国国家高级计算应用中心（NCSA）为了满足各种领域研究需求而研制的一种能高效存储和分发科学数据的新型数据格式。它可以存储不同类型的图像和数码数据的文件格式，并且可以在不同类型的机器上传输，同时还有统一处理这种文件格式的函数库。</li>
+<li>HDF5是分层式数据管理结构。HDF5不但能处理更多的对象，存储更大的文件，支持并行I/O，线程和具备现代操作系统与应用程序所要求的其它特性，而且数据模型变得更简单，概括性更强。</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>可选依赖库<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<ul>
+<li><p class="first">OpenCV库</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：图像操作</li>
+<li>OpenCV，Open Source Computer Vision Library，是一个跨平台计算机视觉库。它轻量级而且高效——由一系列 C 函数和少量 C++ 类构成，同时提供了Python、Ruby、MATLAB等语言的接口，实现了图像处理和计算机视觉方面的很多通用算法。</li>
+<li>很常用。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">LevelDB库</p>
+<blockquote>
+<div><ul>
+<li><p class="first">作用：支持的数据库之一</p>
+</li>
+<li><p class="first">它是google实现的一个非常高效的Key-Value数据库。它是单进程的服务，性能非常高。它只是一个C/C++编程语言的库，不包含网络服务封装。</p>
+</li>
+<li><p class="first">LevelDB特点</p>
+<blockquote>
+<div><ul class="simple">
+<li>LevelDB是一个持久化存储的KV系统，它将大部分数据存储到磁盘上；</li>
+<li>LevelDB在存储数据时，是根据记录的Key值有序存储的；</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">LMDB库</p>
+<blockquote>
+<div><ul>
+<li><p class="first">作用：支持的数据库之一</p>
+</li>
+<li><p class="first">它是一个超级快、超级小的Key-Value数据存储服务，是由OpenLDAP项目的Symas开发的。使用内存映射文件，因此读取的性能跟内存数据库一样，其大小受限于虚拟地址空间的大小。</p>
+</li>
+<li><p class="first">依赖snappy库</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：压缩与解压缩</li>
+<li>是一个C++库，用来压缩和解压缩的开发包。它旨在提供高速压缩速度和合理的压缩率。Snappy比zlib更快，但文件相对要大20%到100%。</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">cuDNN</p>
+<blockquote>
+<div><ul class="simple">
+<li>作用：用于Caffe的GPU加速。</li>
+<li>cuDNN是用于深度神经网络的GPU加速库。它强调性能、易用性和低内存开销。</li>
+<li>被集成到Caffe中，也是一大亮点</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="id8">
+<h2>参考<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.leiphone.com/news/201612/oZUj5d437bpSl5wc.html">http://www.leiphone.com/news/201612/oZUj5d437bpSl5wc.html</a></li>
+<li><a class="reference external" href="https://yufeigan.github.io/tags/Caffe/">https://yufeigan.github.io/tags/Caffe/</a></li>
+<li><a class="reference external" href="http://city.shaform.com/blog/2016/02/26/caffe.html">http://city.shaform.com/blog/2016/02/26/caffe.html</a></li>
+<li><a class="reference external" href="http://caffe.berkeleyvision.org/installation.html">http://caffe.berkeleyvision.org/installation.html</a></li>
+<li><a class="reference external" href="http://www.linuxidc.com/Linux/2015-09/123603.htm">http://www.linuxidc.com/Linux/2015-09/123603.htm</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Caffe源码之Blob.html" class="btn btn-neutral float-right" title="Caffe的Blob" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Windows平台安装Caffe.html" class="btn btn-neutral" title="Windows平台安装Caffe" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

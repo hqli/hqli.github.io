@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Caffe的Net &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="Caffe的Solver" href="Caffe源码之Solver.html" />
+    <link rel="prev" title="Caffe的Layer" href="Caffe源码之Layer.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../implement/index.html">实现</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">经验</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Caffe源码分析及例子</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Windows平台安装Caffe.html">Windows平台安装Caffe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码结构.html">Caffe源码结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Blob.html">Caffe的Blob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Layer.html">Caffe的Layer</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Caffe的Net</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Solver.html">Caffe的Solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe应用之人脸识别.html">Caffe应用之人脸识别例子</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码的前向传播与后向传播.html">Caffe源码的前向传播与后向传播</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../caffe_DP_lecture/index.html">实验室深度学习简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../study_style/index.html">学习方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">经验</a> &raquo;</li>
+        
+          <li><a href="index.html">Caffe源码分析及例子</a> &raquo;</li>
+        
+      <li>Caffe的Net</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/experience/caffe_code/Caffe源码之Net.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="caffenet">
+<h1>Caffe的Net<a class="headerlink" href="#caffenet" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li>Blob：是基础的数据结构，用来保存学习到的参数以及网络传输过程中产生数据。</li>
+<li>Layer：是网络的基本单元，由此派生出了各种层。</li>
+<li>Net：是网络的搭建，将Layer所派生出层类组合成网络。</li>
+<li>Solver：是Net的求解。</li>
+</ul>
+</div>
+<div class="section" id="net">
+<h2>Net<a class="headerlink" href="#net" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id2">
+<h3>源码文件<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li>include/net.hpp</li>
+<li>src/net.cpp</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>整体概览<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">template</span> <span class="o">&lt;</span><span class="n">typename</span> <span class="n">Dtype</span><span class="o">&gt;</span>
+  <span class="k">class</span> <span class="nc">Net</span> <span class="p">{</span>
+   <span class="n">public</span><span class="p">:</span>
+    <span class="n">explicit</span> <span class="n">Net</span><span class="p">(</span><span class="n">const</span> <span class="n">NetParameter</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">,</span> <span class="n">const</span> <span class="n">Net</span><span class="o">*</span> <span class="n">root_net</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">);</span>
+    <span class="n">explicit</span> <span class="n">Net</span><span class="p">(</span><span class="n">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="n">param_file</span><span class="p">,</span> <span class="n">Phase</span> <span class="n">phase</span><span class="p">,</span>
+        <span class="n">const</span> <span class="n">Net</span><span class="o">*</span> <span class="n">root_net</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">);</span>
+    <span class="n">virtual</span> <span class="o">~</span><span class="n">Net</span><span class="p">()</span> <span class="p">{}</span>
+
+    <span class="n">void</span> <span class="n">Init</span><span class="p">(</span><span class="n">const</span> <span class="n">NetParameter</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">);</span>
+
+    <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">Forward</span><span class="p">(</span><span class="n">Dtype</span><span class="o">*</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">);</span>
+    <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">ForwardPrefilled</span><span class="p">(</span><span class="n">Dtype</span><span class="o">*</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">)</span>
+    <span class="n">Dtype</span> <span class="n">ForwardFromTo</span><span class="p">(</span><span class="nb">int</span> <span class="n">start</span><span class="p">,</span> <span class="nb">int</span> <span class="n">end</span><span class="p">);</span>
+    <span class="n">Dtype</span> <span class="n">ForwardFrom</span><span class="p">(</span><span class="nb">int</span> <span class="n">start</span><span class="p">);</span>
+    <span class="n">Dtype</span> <span class="n">ForwardTo</span><span class="p">(</span><span class="nb">int</span> <span class="n">end</span><span class="p">);</span>
+    <span class="o">///</span> <span class="nd">@brief</span> <span class="n">DEPRECATED</span><span class="p">;</span> <span class="nb">set</span> <span class="nb">input</span> <span class="n">blobs</span> <span class="n">then</span> <span class="n">use</span> <span class="n">Forward</span><span class="p">()</span> <span class="n">instead</span><span class="o">.</span>
+    <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">Forward</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*</span> <span class="o">&gt;</span> <span class="o">&amp;</span> <span class="n">bottom</span><span class="p">,</span>
+        <span class="n">Dtype</span><span class="o">*</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">);</span>
+    <span class="n">void</span> <span class="n">Backward</span><span class="p">();</span>
+    <span class="n">void</span> <span class="n">BackwardFromTo</span><span class="p">(</span><span class="nb">int</span> <span class="n">start</span><span class="p">,</span> <span class="nb">int</span> <span class="n">end</span><span class="p">);</span>
+    <span class="n">void</span> <span class="n">BackwardFrom</span><span class="p">(</span><span class="nb">int</span> <span class="n">start</span><span class="p">);</span>
+    <span class="n">void</span> <span class="n">BackwardTo</span><span class="p">(</span><span class="nb">int</span> <span class="n">end</span><span class="p">);</span>
+
+    <span class="n">void</span> <span class="n">Reshape</span><span class="p">();</span>
+
+    <span class="n">void</span> <span class="n">CopyTrainedLayersFrom</span><span class="p">(</span><span class="n">const</span> <span class="n">NetParameter</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">);</span>
+    <span class="o">...</span>
+
+   <span class="n">protected</span><span class="p">:</span>
+    <span class="n">void</span> <span class="n">AppendTop</span><span class="p">(</span><span class="n">const</span> <span class="n">NetParameter</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">layer_id</span><span class="p">,</span>
+                   <span class="n">const</span> <span class="nb">int</span> <span class="n">top_id</span><span class="p">,</span> <span class="nb">set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;*</span> <span class="n">available_blobs</span><span class="p">,</span>
+                   <span class="nb">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="nb">int</span><span class="o">&gt;*</span> <span class="n">blob_name_to_idx</span><span class="p">);</span>
+     <span class="o">///</span> <span class="nd">@brief</span> <span class="n">The</span> <span class="n">network</span> <span class="n">name</span>
+    <span class="n">string</span> <span class="n">name_</span><span class="p">;</span>
+    <span class="o">///</span> <span class="nd">@brief</span> <span class="n">The</span> <span class="n">phase</span><span class="p">:</span> <span class="n">TRAIN</span> <span class="ow">or</span> <span class="n">TEST</span>
+    <span class="n">Phase</span> <span class="n">phase_</span><span class="p">;</span>
+    <span class="o">///</span> <span class="nd">@brief</span> <span class="n">Individual</span> <span class="n">layers</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">net</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">layers_</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">layer_names_</span><span class="p">;</span>
+    <span class="nb">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="nb">int</span><span class="o">&gt;</span> <span class="n">layer_names_index_</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span> <span class="n">layer_need_backward_</span><span class="p">;</span>
+    <span class="o">...</span>
+<span class="n">DISABLE_COPY_AND_ASSIGN</span><span class="p">(</span><span class="n">Net</span><span class="p">);</span>
+
+  <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>Net例子<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>examples/mnist/lenet_train_test.prototxt</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span><span class="p">:</span> <span class="s2">&quot;LeNet&quot;</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;mnist&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;Data&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;data&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;label&quot;</span>
+  <span class="n">include</span> <span class="p">{</span>
+    <span class="n">phase</span><span class="p">:</span> <span class="n">TRAIN</span>
+  <span class="p">}</span>
+  <span class="n">transform_param</span> <span class="p">{</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="mf">0.00390625</span>
+  <span class="p">}</span>
+  <span class="n">data_param</span> <span class="p">{</span>
+    <span class="n">source</span><span class="p">:</span> <span class="s2">&quot;examples/mnist/mnist_train_lmdb&quot;</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="mi">64</span>
+    <span class="n">backend</span><span class="p">:</span> <span class="n">LMDB</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;mnist&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;Data&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;data&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;label&quot;</span>
+  <span class="n">include</span> <span class="p">{</span>
+    <span class="n">phase</span><span class="p">:</span> <span class="n">TEST</span>
+  <span class="p">}</span>
+  <span class="n">transform_param</span> <span class="p">{</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="mf">0.00390625</span>
+  <span class="p">}</span>
+  <span class="n">data_param</span> <span class="p">{</span>
+    <span class="n">source</span><span class="p">:</span> <span class="s2">&quot;examples/mnist/mnist_test_lmdb&quot;</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="mi">100</span>
+    <span class="n">backend</span><span class="p">:</span> <span class="n">LMDB</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;conv1&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;Convolution&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;data&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;conv1&quot;</span>
+  <span class="n">param</span> <span class="p">{</span>
+    <span class="n">lr_mult</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">}</span>
+  <span class="n">param</span> <span class="p">{</span>
+    <span class="n">lr_mult</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="p">}</span>
+  <span class="n">convolution_param</span> <span class="p">{</span>
+    <span class="n">num_output</span><span class="p">:</span> <span class="mi">20</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="n">stride</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="n">weight_filler</span> <span class="p">{</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;xavier&quot;</span>
+    <span class="p">}</span>
+    <span class="n">bias_filler</span> <span class="p">{</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;constant&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;pool1&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;Pooling&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;conv1&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;pool1&quot;</span>
+  <span class="n">pooling_param</span> <span class="p">{</span>
+    <span class="n">pool</span><span class="p">:</span> <span class="n">MAX</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="n">stride</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;conv2&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;Convolution&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;pool1&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;conv2&quot;</span>
+  <span class="n">param</span> <span class="p">{</span>
+    <span class="n">lr_mult</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">}</span>
+  <span class="n">param</span> <span class="p">{</span>
+    <span class="n">lr_mult</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="p">}</span>
+  <span class="n">convolution_param</span> <span class="p">{</span>
+    <span class="n">num_output</span><span class="p">:</span> <span class="mi">50</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">5</span>
+    <span class="n">stride</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="n">weight_filler</span> <span class="p">{</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;xavier&quot;</span>
+    <span class="p">}</span>
+    <span class="n">bias_filler</span> <span class="p">{</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;constant&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;pool2&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;Pooling&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;conv2&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;pool2&quot;</span>
+  <span class="n">pooling_param</span> <span class="p">{</span>
+    <span class="n">pool</span><span class="p">:</span> <span class="n">MAX</span>
+    <span class="n">kernel_size</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="n">stride</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;ip1&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;InnerProduct&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;pool2&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;ip1&quot;</span>
+  <span class="n">param</span> <span class="p">{</span>
+    <span class="n">lr_mult</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">}</span>
+  <span class="n">param</span> <span class="p">{</span>
+    <span class="n">lr_mult</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="p">}</span>
+  <span class="n">inner_product_param</span> <span class="p">{</span>
+    <span class="n">num_output</span><span class="p">:</span> <span class="mi">500</span>
+    <span class="n">weight_filler</span> <span class="p">{</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;xavier&quot;</span>
+    <span class="p">}</span>
+    <span class="n">bias_filler</span> <span class="p">{</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;constant&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;relu1&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;ReLU&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;ip1&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;ip1&quot;</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;ip2&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;InnerProduct&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;ip1&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;ip2&quot;</span>
+  <span class="n">param</span> <span class="p">{</span>
+    <span class="n">lr_mult</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="p">}</span>
+  <span class="n">param</span> <span class="p">{</span>
+    <span class="n">lr_mult</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="p">}</span>
+  <span class="n">inner_product_param</span> <span class="p">{</span>
+    <span class="n">num_output</span><span class="p">:</span> <span class="mi">10</span>
+    <span class="n">weight_filler</span> <span class="p">{</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;xavier&quot;</span>
+    <span class="p">}</span>
+    <span class="n">bias_filler</span> <span class="p">{</span>
+      <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;constant&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;accuracy&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;Accuracy&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;ip2&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;label&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;accuracy&quot;</span>
+  <span class="n">include</span> <span class="p">{</span>
+    <span class="n">phase</span><span class="p">:</span> <span class="n">TEST</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;loss&quot;</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;SoftmaxWithLoss&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;ip2&quot;</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;label&quot;</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;loss&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>成员变量<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>成员变量较多，选主要的</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>/// @brief The network name
+string name_; //网络的名字
+/// @brief The phase: TRAIN or TEST
+Phase phase_; // 表明网络用于训练还是测试
+/// @brief Individual layers in the net
+vector&lt;shared_ptr&lt;Layer&lt;Dtype&gt; &gt; &gt; layers_; // 多个Layer组成
+vector&lt;string&gt; layer_names_; // 多个Layer的名字
+map&lt;string, int&gt; layer_names_index_; // 多个Layer名字和索引的映射
+vector&lt;bool&gt; layer_need_backward_; // 多个Layer是否需要后向传播
+/// @brief the blobs storing intermediate results between the layer.
+vector&lt;shared_ptr&lt;Blob&lt;Dtype&gt; &gt; &gt; blobs_; // 多个Blobb存储的是中间结果
+vector&lt;string&gt; blob_names_; // 多个Blob的名字
+map&lt;string, int&gt; blob_names_index_; // 多个Blob名字和索引的映射
+vector&lt;bool&gt; blob_need_backward_; // Blob是否保存后向传播，这一层的top就是下一层的bottom,网络是一层一层堆起来的。
+/// bottom_vecs stores the vectors containing the input for each layer.
+/// They don&#39;t actually host the blobs (blobs_ does), so we simply store
+/// pointers.
+vector&lt;vector&lt;Blob&lt;Dtype&gt;*&gt; &gt; bottom_vecs_; // 整个网络所有网络层的bottom blob指针
+vector&lt;vector&lt;int&gt; &gt; bottom_id_vecs_; //存储整个网络所有网络层的bottom blob的ID
+vector&lt;vector&lt;bool&gt; &gt; bottom_need_backward_; //整个网络所有网络层的bottom blob是否需要backward。top blob不需要backward
+/// top_vecs stores the vectors containing the output for each layer
+vector&lt;vector&lt;Blob&lt;Dtype&gt;*&gt; &gt; top_vecs_; // 整个网络所有网络层的top blob指针，bottom blob和top blob会有重叠。
+vector&lt;vector&lt;int&gt; &gt; top_id_vecs_; //存储整个网络所有网络层的top blob的ID
+/// Vector of weight in the loss (or objective) function of each net blob,
+/// indexed by blob_id.
+vector&lt;Dtype&gt; blob_loss_weights_;
+vector&lt;vector&lt;int&gt; &gt; param_id_vecs_;
+vector&lt;int&gt; param_owners_;
+vector&lt;string&gt; param_display_names_;
+vector&lt;pair&lt;int, int&gt; &gt; param_layer_indices_;
+map&lt;string, int&gt; param_names_index_;
+/// blob indices for the input and the output of the net
+vector&lt;int&gt; net_input_blob_indices_;
+vector&lt;int&gt; net_output_blob_indices_;
+vector&lt;Blob&lt;Dtype&gt;*&gt; net_input_blobs_;
+vector&lt;Blob&lt;Dtype&gt;*&gt; net_output_blobs_;
+/// The parameters in the network.
+vector&lt;shared_ptr&lt;Blob&lt;Dtype&gt; &gt; &gt; params_;
+vector&lt;Blob&lt;Dtype&gt;*&gt; learnable_params_;
+/**
+ * The mapping from params_ -&gt; learnable_params_: we have
+ * learnable_param_ids_.size() == params_.size(),
+ * and learnable_params_[learnable_param_ids_[i]] == params_[i].get()
+ * if and only if params_[i] is an &quot;owner&quot;; otherwise, params_[i] is a sharer
+ * and learnable_params_[learnable_param_ids_[i]] gives its owner.
+ */
+vector&lt;int&gt; learnable_param_ids_;
+/// the learning rate multipliers for learnable_params_
+vector&lt;float&gt; params_lr_;
+vector&lt;bool&gt; has_params_lr_;
+/// the weight decay multipliers for learnable_params_
+vector&lt;float&gt; params_weight_decay_;
+vector&lt;bool&gt; has_params_decay_;
+/// The bytes of memory used by this net
+size_t memory_used_;
+/// Whether to compute and display debug info for the net.
+bool debug_info_;
+/// The root net that actually holds the shared layers in data parallelism
+const Net* const root_net_;
+</pre></div>
+</div>
+<ul class="simple">
+<li>Net由于是由多个Layer组成，内部的变量较多。</li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h3>成员函数<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>待续。。。。。。。。。</p>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>参考<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.zhihu.com/question/27982282/answer/39350629">https://www.zhihu.com/question/27982282/answer/39350629</a></li>
+<li><a class="reference external" href="http://blog.csdn.net/iamzhangzhuping/article/details/50537240">http://blog.csdn.net/iamzhangzhuping/article/details/50537240</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Caffe源码之Solver.html" class="btn btn-neutral float-right" title="Caffe的Solver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Caffe源码之Layer.html" class="btn btn-neutral" title="Caffe的Layer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

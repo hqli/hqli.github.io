@@ -1,0 +1,322 @@
+Caffe的Layer
+************
+
+概述
+=======
+* Blob：是基础的数据结构，用来保存学习到的参数以及网络传输过程中产生数据。
+* Layer：是网络的基本单元，由此派生出了各种层。
+* Net：是网络的搭建，将Layer所派生出层类组合成网络。
+* Solver：是Net的求解。
+
+Layer
+======
+
+源码文件
+^^^^^^^^
+
+``文件夹`` 表示文件夹
+
+* include/layer.hpp
+* include/``layer``/...
+* src/layer.cpp
+* src/``layer``/...
+
+整体概览
+^^^^^^^^^
+
+::
+	
+	template <typename Dtype>
+	class Layer {
+	 public:
+
+	  explicit Layer(const LayerParameter& param)
+	    : layer_param_(param), is_shared_(false) {
+	    }
+	  virtual ~Layer() {}
+	  inline Dtype Forward(const vector<Blob<Dtype>*>& bottom,
+	      const vector<Blob<Dtype>*>& top);
+	  inline void Backward(const vector<Blob<Dtype>*>& top,
+	      const vector<bool>& propagate_down,
+	      const vector<Blob<Dtype>*>& bottom);
+	  ...
+
+	 protected:
+	  LayerParameter layer_param_;
+	  Phase phase_;
+	  vector<shared_ptr<Blob<Dtype> > > blobs_;
+	  vector<bool> param_propagate_down_;
+	  ...
+
+	 private:
+	  bool is_shared_;
+	  shared_ptr<boost::mutex> forward_mutex_;
+	  void InitMutex();
+	  void Lock();
+  	  void Unlock();
+	}
+
+InitMutex()、Lock()、Unlock()在src/layer.cpp中实现。
+
+成员变量
+^^^^^^^^^
+
+::
+
+	 protected:
+	  /** The protobuf that stores the layer parameters */
+	  LayerParameter layer_param_;
+	  /** The phase: TRAIN or TEST */
+	  Phase phase_;
+	  /** The vector that stores the learnable parameters as a set of blobs. */
+	  vector<shared_ptr<Blob<Dtype> > > blobs_;
+	  /** Vector indicating whether to compute the diff of each param blob. */
+	  vector<bool> param_propagate_down_;
+	  /** The vector that indicates whether each top blob has a non-zero weight in
+	   *  the objective function. */
+	  vector<Dtype> loss_;
+	 private:
+	  /** Whether this layer is actually shared by other nets*/
+	  bool is_shared_;
+	  /** The mutex for sequential forward if this layer is shared */
+	  shared_ptr<boost::mutex> forward_mutex_;
+
+* ``layer_param_`` 用于保存layer的参数
+* ``phase_`` 标定阶段是train还是test
+* ``blobs_`` vector类型，是Blob的一个集合，保存了learnable参数, **weight和bias分开保存在两个blob中**
+* ``param_propagate_down_`` vector类型，标志位是否要计算反向传递的梯度
+* ``loss_`` vector类型，每个top blob是否有非零的权重weight
+* ``is_shared_`` 表明该layer是否被其他net共享
+* ``forward_mutex_`` 在当前layer被其他net共享情况下，通过加锁来保证前向传递时的数据一致性
+* ``layer_param_`` 详解
+
+	* layer_param_是LayerParameter类型（protobuf定义的一组结构），定义在src/caffe/proto/caffe.cc
+	* src/caffe/proto/caffe.cc是由src/caffe/proto/caffe.proto编译成的
+
+		::
+
+			message LayerParameter {
+			  optional string name = 1; // the layer name optianl表示必须填写
+			  optional string type = 2; // the layer type
+			  repeated string bottom = 3; // the name of each bottom blob repeated表示已重复
+			  repeated string top = 4; // the name of each top blob
+			  // The train / test phase for computation.
+			  optional Phase phase = 10;
+
+			  // The amount of weight to assign each top blob in the objective.
+			  // Each layer assigns a default value, usually of either 0 or 1,
+			  // to each top blob.
+			  repeated float loss_weight = 5;
+
+			  // Specifies training parameters (multipliers on global learning constants,
+			  // and the name and other settings used for weight sharing).
+			  repeated ParamSpec param = 6;
+
+			  // The blobs containing the numeric parameters of the layer.
+			  repeated BlobProto blobs = 7;
+			  ...
+			 }
+
+成员函数
+^^^^^^^^^
+
+::
+
+	explicit Layer(const LayerParameter& param)
+	    : layer_param_(param), is_shared_(false) {
+	      // Set phase and copy blobs (if there are any).
+	      phase_ = param.phase();
+	      if (layer_param_.blobs_size() > 0) {
+	        blobs_.resize(layer_param_.blobs_size());
+	        for (int i = 0; i < layer_param_.blobs_size(); ++i) {
+	          blobs_[i].reset(new Blob<Dtype>());
+	          blobs_[i]->FromProto(layer_param_.blobs(i));
+	        }
+	      }
+	    }
+	  virtual ~Layer() {}
+构造函数。首先对phase_赋值，表明当前网络是train还是test。在参数的blobs大小大于零情况下，blobs_（一个类型为指向blob类的shared_ptr指针的vector）申请空间，然后将传入的layer_param中的blob拷贝过来。
+
+::
+
+	void SetUp(const vector<Blob<Dtype>*>& bottom,
+	      const vector<Blob<Dtype>*>& top) {
+	    InitMutex();
+	    CheckBlobCounts(bottom, top);
+	    LayerSetUp(bottom, top);
+	    Reshape(bottom, top);
+	    SetLossWeights(top);
+	  }
+Setup函数。首先check 这个bottom和top的blob是否正确，再调用Layersetup对每一具体的层做进一步设置，之后再做reshape来设置top blobs和internal buffer。最后再设置loss weight multiplier 的blob对每一个非零的loss和weight，一般这个方法被继承之后是不会被重写的。
+
+::
+
+	virtual void LayerSetUp(const vector<Blob<Dtype>*>& bottom,const vector<Blob<Dtype>*>& top)
+	virtual inline bool ShareInParallel() 
+	inline bool IsShared() const
+	inline void SetShared(bool is_shared)
+* LayerSetup就是对具体某一个layer的setup,被上面的那个函数所调用。
+* ShareInParallel和IsShared和SetShared分别是用来返回并行状态和获得这一layer是否被多个nets所共享，默认是除了data layer都是关闭的。在多个GPU下的Train阶段以及share是true的情况下,is_shared将会被置成true。
+
+::
+
+	virtual void Reshape(const vector<Blob<Dtype>*>& bottom,
+	      const vector<Blob<Dtype>*>& top) = 0;
+Reshape函数。它主要是layer用来根据输入的blob调节Internal buffer(内部缓冲区)以及输出的Blob。
+
+::
+
+	inline Dtype Forward(const vector<Blob<Dtype>*>& bottom,
+	      const vector<Blob<Dtype>*>& top);
+
+**重要函数 Forward** 这是一个装饰器，继承之后再调用其相应的forward_cpu或者forward_gpu，根据输入的input data blob计算相应的output data blob，同时会得到这一层layer的total loss.
+
+::
+
+	inline void Backward(const vector<Blob<Dtype>*>& top,
+	      const vector<bool>& propagate_down,
+	      const vector<Blob<Dtype>*>& bottom);
+**重要函数 BackWard**  和Forward类似，也是一个装饰器，实现正向传播。实现的是反向传播，也就是给定top blob和error gradient计算得到bottom的error gradient。其输入是 top blobs ，在top blobs里面的diff存储的就是其相应的error gradients。其中propagate_down这个参数跟Bottom的长度是一样的，每一个Index用来指定是否需要反向传播error gradients 到对应的bottom blob。而bottom 这里面的diff 区域存放的就是BackWard计算出来相应的gradient error.
+
+* 如果自己你要实现一个自己的Layer，主要实现的就是Forward_cpu和Backward_cpu 以及gpu（可选）。
+* 可以参考何凯明的深度残差网络https://github.com/KaimingHe/deep-residual-networks
+* 想对正向传播和反向传播原理详细了解的童鞋可以去看一下人工神经网络设计
+
+::
+
+	vector<shared_ptr<Blob<Dtype> > >& blobs()\\返回blobs
+	const LayerParameter& layer_param() \\返回layer 的参数parameter
+	virtual void ToProto(LayerParameter* param, bool write_diff = false)\\将层参数写到Protobuffer里
+	inline Dtype loss(const int top_index) const \\给定index返回相应的scalar loss
+	inline void set_loss(const int top_index, const Dtype value)\\给定Index设置loss
+	virtual inline const char* type()\\返回layer的type
+工具类函数
+
+::
+
+	virtual inline int ExactNumBottomBlobs() 
+	virtual inline int MinBottomBlobs() 
+	virtual inline int MaxBottomBlobs() 
+	virtual inline int ExactNumTopBlobs() 
+	virtual inline int MinTopBlobs() 
+	virtual inline int MaxTopBlobs() 
+	virtual inline bool EqualNumBottomTopBlobs()
+	virtual inline bool AutoTopBlobs() 
+主要获得bottom blob或者top blob的数量状态。
+
+::
+
+	virtual inline bool AllowForceBackward(const int bottom_index)
+	inline bool param_propagate_down(const int param_id)
+	inline void set_param_propagate_down(const int param_id, const bool value)
+AllowforceBackward用来设置是否强制梯度返回，因为有些层其实不需要梯度信息。后面两个函数分别查看以及设置是是否需要计算梯度。
+
+::
+
+	virtual void Forward_cpu(const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top)
+	virtual void Forward_gpu(const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top)
+	virtual void Backward_cpu(const vector<Blob<Dtype>*>& top,const vector<bool>& propagate_down,const vector<Blob<Dtype>*>& bottom) = 0;
+	virtual void Backward_gpu(const vector<Blob<Dtype>*>& top,const vector<bool>& propagate_down,const vector<Blob<Dtype>*>& bottom)
+计算cpu和gpu模式下的正向和反向传播实现。被Forward、Backward两个装饰器调用。
+
+::
+
+	virtual void CheckBlobCounts(const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top)
+这个函数被setup调用，主要是check bottom和top 的blob是否match，这里面用了上面提到的ExactBottomBlobs（）等函数
+
+::
+	inline void SetLossWeights(const vector<Blob<Dtype>*>& top)
+SetLoss是非常重要的一个步骤，是被SetUp调用来初始化top bottom的weights，并且存储非零的loss weights在diff blob里面。
+
+Layer的工厂方法
+===============
+
+工厂方法是连接所有模块的关键。
+
+源码文件
+^^^^^^^^^
+* include/layer_factory.hpp
+* src/layer_factory.cpp
+
+整体概览
+^^^^^^^^^^
+layer_factory.hpp
+
+::
+
+	template <typename Dtype>
+	class LayerRegistry {
+	 public:
+	  typedef shared_ptr<Layer<Dtype> > (*Creator)(const LayerParameter&);
+	  typedef std::map<string, Creator> CreatorRegistry;
+	  static CreatorRegistry& Registry()
+	  static void AddCreator(const string& type, Creator creator)
+	  static shared_ptr<Layer<Dtype> > CreateLayer(const LayerParameter& param)
+	  static vector<string> LayerTypeList()
+	 private:
+	  // Layer registry should never be instantiated - everything is done with its
+	  // static variables.
+	  LayerRegistry()
+	  static string LayerTypeListString()
+	}
+	template <typename Dtype>
+	class LayerRegisterer {
+	 public:
+	  LayerRegisterer(const string& type,
+	                  shared_ptr<Layer<Dtype> > (*creator)(const LayerParameter&)) {
+	    // LOG(INFO) << "Registering layer type: " << type;
+	    LayerRegistry<Dtype>::AddCreator(type, creator);
+	  }
+	};
+
+	#define REGISTER_LAYER_CREATOR(type, creator)                                  \
+	  static LayerRegisterer<float> g_creator_f_##type(#type, creator<float>);     \
+	  static LayerRegisterer<double> g_creator_d_##type(#type, creator<double>)    \
+
+	#define REGISTER_LAYER_CLASS(type)                                             \
+	  template <typename Dtype>                                                    \
+	  shared_ptr<Layer<Dtype> > Creator_##type##Layer(const LayerParameter& param) \
+	  {                                                                            \
+	    return shared_ptr<Layer<Dtype> >(new type##Layer<Dtype>(param));           \
+	  }                                                                            \
+	  REGISTER_LAYER_CREATOR(type, Creator_##type##Layer)
+
+layer_factory.cpp
+
+::
+
+	shared_ptr<Layer<Dtype> > GetConvolutionLayer(
+	    const LayerParameter& param
+	REGISTER_LAYER_CREATOR(Convolution, GetConvolutionLayer);
+	shared_ptr<Layer<Dtype> > GetPoolingLayer(const LayerParameter& param
+	REGISTER_LAYER_CREATOR(Pooling, GetPoolingLayer);
+	shared_ptr<Layer<Dtype> > GetLRNLayer(const LayerParameter& param
+	REGISTER_LAYER_CREATOR(LRN, GetLRNLayer);
+	shared_ptr<Layer<Dtype> > GetReLULayer(const LayerParameter& param
+	REGISTER_LAYER_CREATOR(ReLU, GetReLULayer);
+	shared_ptr<Layer<Dtype> > GetSoftmaxLayer
+	REGISTER_LAYER_CREATOR(Softmax, GetSoftmaxLayer);
+	shared_ptr<Layer<Dtype> > GetTanHLayer(const LayerParameter& param)
+	REGISTER_LAYER_CREATOR(TanH, GetTanHLayer);
+	shared_ptr<Layer<Dtype> > GetPythonLayer(const LayerParameter& param
+	REGISTER_LAYER_CREATOR(Python, GetPythonLayer);
+
+分析
+^^^^^^^^^
+Layer的创建使用的是工厂模式。
+
+REGISTER_LAYER_CREATOR是一个宏函数，负责将创建层的函数放入LayerRegistry。
+layer_factory.cpp使用REGISTER_LAYER_CREATOR将主要的Layer进行了注册。
+
+
+Layer的具体实现
+================
+后面有时间详细讲
+
+
+
+参考
+=====
+* http://www.cnblogs.com/louyihang-loves-baiyan/
+* https://www.zhihu.com/question/27982282/answer/39350629
+* http://blog.csdn.net/iamzhangzhuping/article/details/50499881

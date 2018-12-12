@@ -1,0 +1,877 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>实验室深度学习平台介绍 &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="Caffe应用之人脸识别例子" href="Caffe应用之人脸识别.html" />
+    <link rel="prev" title="实验室深度学习简介" href="index.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../implement/index.html">实现</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">经验</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../caffe_code/index.html">Caffe源码分析及例子</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">实验室深度学习简介</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">实验室深度学习平台介绍</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe应用之人脸识别.html">Caffe应用之人脸识别例子</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../study_style/index.html">学习方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">经验</a> &raquo;</li>
+        
+          <li><a href="index.html">实验室深度学习简介</a> &raquo;</li>
+        
+      <li>实验室深度学习平台介绍</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/experience/caffe_DP_lecture/实验室深度学习平台介绍.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>实验室深度学习平台介绍<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>概述<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>实验室深度学习资料放在ip为192.168.1.249的web服务器上。（内网台式机的浏览器访问http:://192.168.1.249，即可看到）
+需要看的文档主要是深度学习平台-&gt;Caffe-&gt;Caffe使用手册。
+欢迎大家浏览</p>
+<p>AmaxGPU服务器5块C2075。由于服务器需要，该服务器重装系统，暂时还未重装Caffe依赖。后面几天我会重装Caffe依赖。今天2017/06/07。</p>
+<p>K80服务器4块K80。由于景行锐创统一管理平台问题，还未加上该节点。</p>
+<p>环境：Linux操作系统（RedHat）</p>
+</div>
+<div class="section" id="id3">
+<h2>使用之前<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>学习资料位置，内网台式机的浏览器访问http:://192.168.1.249</p>
+<img alt="../../../_images/192.168.1.249_index.png" src="../../../_images/192.168.1.249_index.png" />
+<p>caffe使用文档位置</p>
+<img alt="../../../_images/192.168.1.249_caffe使用文档.png" src="../../../_images/192.168.1.249_caffe使用文档.png" />
+<p>使用实验室深度学习框架，登录景行锐创统一门户</p>
+<img alt="../../../_images/192.168.2.82_login.png" src="../../../_images/192.168.2.82_login.png" />
+<p>进入景行锐创，选择GPU服务器</p>
+<img alt="../../../_images/192.168.2.82_index.png" src="../../../_images/192.168.2.82_index.png" />
+<p>Amax服务器用户</p>
+<img alt="../../../_images/amax_service_home.png" src="../../../_images/amax_service_home.png" />
+</div>
+<div class="section" id="id4">
+<h2>使用<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h3>整体流程<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<ol class="arabic simple">
+<li>将数据集转换为lmdb，hdf5等caffe可以处理的格式。</li>
+<li>配置训练模型的网络与solver，进行训练，得到模型参数。</li>
+<li>使用模型进行分类等工作。</li>
+</ol>
+<img alt="../../../_images/whole_process.png" src="../../../_images/whole_process.png" />
+</div>
+<div class="section" id="caffe">
+<h3>caffe编译使用<a class="headerlink" href="#caffe" title="永久链接至标题">¶</a></h3>
+<p>目的：每个用户的工程一般建立在~/caffe-master/examples/下，为了不相互干扰，每人在自己的主目录下编译一个caffe。
+编译方法如下：</p>
+<ul class="simple">
+<li>进入GPU服务器</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>通过内网台式机的浏览器192.168.2.82的超算平台使用VNC登录GPU服务器</li>
+<li>没有账号的，找吴老师申请账号和密码，通过ssh连接GPU服务器。</li>
+<li>不清楚的，内网台式机的浏览器访问http:://192.168.1.249，查看《使用GPU服务器.docx》。</li>
+</ul>
+</div></blockquote>
+<ul>
+<li><p class="first">在GPU服务器终端下，执行以下代码，编译caffe</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">caffe_usage</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">sh</span> <span class="n">caffe_usage</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>执行以上代码，caffe会安装在用户主目录的caffe-master文件夹中。
+目录如下所示，假设用户名为test。</p>
+<blockquote>
+<div><p>根目录（/）</p>
+<blockquote>
+<div><ul>
+<li><p class="first">home（系统的文件夹）</p>
+<blockquote>
+<div><ul>
+<li><p class="first">test（文件夹，找吴老师申请的账号命名的文件夹，系统生成的）</p>
+<blockquote>
+<div><ul>
+<li><p class="first">caffe-master（文件夹，编译生成的caffe主目录）</p>
+<blockquote>
+<div><ul>
+<li><p class="first">examples（编译生成的文件夹，用来包含的caffe自带的demo和自己创建的工程）</p>
+<blockquote>
+<div><ul>
+<li><p class="first">projectname（文件夹，自己创建的工程，自己命名）</p>
+<blockquote>
+<div><ul class="simple">
+<li>projectname_train_lmdb(文件夹，训练数据，包含data和label，通过mat2lmdb.py工具生成)</li>
+<li>projectname_test_lmdb(文件夹，测试数据，包含data和label，通过mat2lmdb.py工具生成)</li>
+<li>projectname_net.prototxt(网络配置文件)</li>
+<li>projectname_solver.prototxt(解决方案配置文件)</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<p><strong>备注</strong></p>
+<p>projectname_net.prototxt中的后缀名prototxt是protobuf文件的后缀名，后缀名不可改。</p>
+<p>默认网络配置文件的命名方式是projectname_net.prototxt（projectname是自己定义的工程名）</p>
+<p>默认解决方案配置文件的命名方式是projectname_solover.prototxt（projectname是自己定义的工程名）</p>
+</div>
+<div class="section" id="id6">
+<h3>创建工程示例<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>假设创建的工程名为HSI，则在caffe-master/examples文件夹下创建HSI文件夹，作为工程主目录。
+在该目录下新建HSI_net.prototxt，HSI_solver.prototxt文档</p>
+<p>最终结构如下：</p>
+<ul>
+<li><p class="first">caffe-master（文件夹，生成的caffe主目录）</p>
+<blockquote>
+<div><ul>
+<li><p class="first">examples（生成的文件夹，用来包含的caffe自带的demo和自己创建的工程）</p>
+<blockquote>
+<div><ul>
+<li><p class="first">HSI(文件夹)</p>
+<blockquote>
+<div><ul class="simple">
+<li>HSI_train_lmdb(文件夹，训练数据，包含data和label，通过mat2lmdb.py工具生成)</li>
+<li>HSI_test_lmdb(文件夹，测试数据，包含data和label，通过mat2lmdb.py工具生成)</li>
+<li>HSI_net.prototxt(网络配置文件)</li>
+<li>HSI_solver.prototxt(解决方案配置文件)</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="id7">
+<h3>数据采集与数据转换<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>可以先将数据都存储成mat格式。</p>
+<p>mat转lmdb
+功能
+将特定格式的mat文件转换为lmdb，仅适用于单标签。</p>
+<p>注释
+mat数据格式必须存储为n*c*h*w的形式，四维，n表示样本编号，c表示通道数，h表示图像的高度(行)，w表示图像的宽度（列）。
+标签的格式为n*1，一维，n表示标签个数。</p>
+<p>一般，训练样本：测试样本 = 9:1，可根据需要修改。</p>
+<p>单标签：将图像分类，如果有100类，则标签为0~99，整数。</p>
+<p>含义
+Indian pines图像是145*145*200的，要打标签的是145*145个像素点，每个像素点是200维，每个样本（1*1*200）对应一个标签，共有145*145个样本。
+这样的训练样本只是200维的向量，为了充分利用CNN的卷积功能，我们将每个200维的向量reshape成20*10的图像来分析不同类别的光谱结构。</p>
+<p>将这样的数据存储为mat文件，格式是n*c*h*w，n是样本个数145*145，c是通道数为1，h是图像高度为20，w是图像宽度为10。</p>
+<p>使用
+具体使用方法如下：</p>
+<p>在GPU节点的Linux终端下</p>
+<blockquote>
+<div><ul>
+<li><p class="first">下载该工具</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">mat2lmdb</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">转换</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mat2lmdb</span><span class="o">.</span><span class="n">py</span>  <span class="n">data</span><span class="o">.</span><span class="n">mat</span>  <span class="n">label</span><span class="o">.</span><span class="n">mat</span>  <span class="n">XXX_lmdb</span><span class="p">(</span><span class="n">生成的是名为XXX_lmdb的文件夹</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">使用</p>
+<ul class="simple">
+<li>将转换好的文件放在caffe-master/examples/HSI文件夹下</li>
+<li>对训练数据和测试通过以上操作，则生成HSI_train_lmdb和HSI_test_lmdb。将其放在caffe-master/examples/HSI文件夹下</li>
+</ul>
+</li>
+<li><p class="first">例子</p>
+<ul>
+<li><p class="first">获得mat文件，在终端通过输入以下命令获得</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">train_data1</span><span class="o">.</span><span class="n">mat</span>
+<span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">train_label1</span><span class="o">.</span><span class="n">mat</span>
+<span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">test_data1</span><span class="o">.</span><span class="n">mat</span>
+<span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">test_label1</span><span class="o">.</span><span class="n">mat</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">转换使用</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">mat2lmdb</span><span class="o">.</span><span class="n">py</span>
+<span class="n">python</span> <span class="n">mat2lmdb</span><span class="o">.</span><span class="n">py</span> <span class="n">train_data1</span><span class="o">.</span><span class="n">mat</span> <span class="n">train_label1</span><span class="o">.</span><span class="n">mat</span> <span class="n">HSI_train_lmdb</span>
+<span class="n">python</span> <span class="n">mat2lmdb</span><span class="o">.</span><span class="n">py</span> <span class="n">test_data1</span><span class="o">.</span><span class="n">mat</span> <span class="n">test_label1</span><span class="o">.</span><span class="n">mat</span> <span class="n">HSI_test_lmdb</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>如果只是想实践一下，可以跳过五、六节，直接到第七节。</p>
+</div>
+<div class="section" id="hsi-net-prototxt">
+<h3>网络配置文件（HSI_net.prototxt）的修改<a class="headerlink" href="#hsi-net-prototxt" title="永久链接至标题">¶</a></h3>
+<p>网络配置文件是用来指定训练模型，即输入数据，卷积，池化等操作的参数配置。</p>
+<p>net分为数据层，视觉层，激活层和其他层（softmax_loss层，Inner Product层，accuracy层）
+网络结构如下。</p>
+<p>HSI_net.prototxt的下载</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_net</span><span class="o">.</span><span class="n">prototxt</span>
+</pre></div>
+</div>
+<p>HSI_net.prototxt内容如下：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>name: &quot;HSI&quot;  #工程名
+layer {
+  name: &quot;data&quot;  #该层的名称
+  type: &quot;Data&quot;  #该层的类型
+  top: &quot;data&quot;  #该层的输出
+  top: &quot;label&quot;  #该层的输出
+  data_param {  #data层的参数
+    source: &quot;examples/HSI/HSI_train_lmdb&quot;  #输入
+    batch_size: 128 #输入
+    backend: LMDB  #输入的数据格式
+  }
+  include: { phase: TRAIN }  #阶段，表明是训练阶段（该层仅在训练阶段使用）
+}
+layer {            ##测试数据层
+  name: &quot;data&quot;  #该层的名称
+  type: &quot;Data&quot;   #该层的类型
+  top: &quot;data&quot;  #该层的输出
+  top: &quot;label&quot;  #该层的输出
+  data_param {  #data层的参数
+    source: &quot;examples/HSI/HSI_test_lmdb&quot;  #输入
+    batch_size: 209  #输入
+    backend: LMDB  #输入的数据格式
+  }
+  include: { phase: TEST }  #阶段，表明是测试阶段（该层仅在训练阶段使用）
+}
+
+layer {
+  name: &quot;conv1&quot;  #该层的名称
+  type: &quot;Convolution&quot;  #该层的类型
+  bottom: &quot;data&quot;  #该层的输入
+  top: &quot;conv1&quot;  #该层的输出
+  param {     #权值
+    lr_mult: 1  #学习系数
+  }
+  param {   #偏置
+    lr_mult: 0.1  #学习系数
+  }
+  convolution_param {  #卷积的参数
+    num_output: 64  #过滤器的个数
+    kernel_size: 9  #过滤器的大小
+    stride: 1  #卷积的步长
+    pad: 0  #指定在输入的每一边加上多少个像素
+    weight_filler {  #权重的初始化方法
+      type: &quot;gaussian&quot;  #类型，高斯。
+      std: 0.001  #高斯的标准平方差
+    }
+    bias_filler {  #偏置的初始化方法
+      type: &quot;constant&quot;  #类型，常数
+      value: 0  #偏置是0常数
+    }
+  }
+}
+
+layer {                    #激活层
+  name: &quot;relu1&quot;   #名称
+  type: &quot;ReLU&quot;    #激活函数，一般为ReLU，以前是sigmoid
+  bottom: &quot;conv1&quot;    #输入
+  top: &quot;conv1&quot;  #输出
+}
+
+layer {                    #卷积层
+  name: &quot;conv2&quot;
+  type: &quot;Convolution&quot;
+  bottom: &quot;conv1&quot;
+  top: &quot;conv2&quot;
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 0.1
+  }
+  convolution_param {
+    num_output: 32
+    kernel_size: 1
+    stride: 1
+    pad: 0
+    weight_filler {
+      type: &quot;gaussian&quot;
+      std: 0.001
+    }
+    bias_filler {
+      type: &quot;constant&quot;
+      value: 0
+    }
+  }
+}
+
+layer {                   #激活层
+  name: &quot;relu2&quot;
+  type: &quot;ReLU&quot;
+  bottom: &quot;conv2&quot;
+  top: &quot;conv2&quot;
+}
+
+layer {                  #卷积层
+  name: &quot;conv3&quot;
+  type: &quot;Convolution&quot;
+  bottom: &quot;conv2&quot;
+  top: &quot;conv3&quot;
+  param {
+    lr_mult: 0.1
+  }
+  param {
+    lr_mult: 0.1
+  }
+  convolution_param {
+    num_output: 1
+    kernel_size: 3
+    stride: 1
+    pad: 0
+    weight_filler {
+      type: &quot;gaussian&quot;
+      std: 0.001
+    }
+    bias_filler {
+      type: &quot;constant&quot;
+      value: 0
+    }
+  }
+}
+
+layer {           #全连接层
+  name: &quot;ip1&quot;   #该层的名称
+  type: &quot;InnerProduct&quot;  #该层的类型
+  bottom: &quot;conv3&quot;  #该层的输入
+  top: &quot;ip1&quot;  #该层的输出
+  param {  #参数
+    lr_mult: 1  #学习率系数
+  }
+  param {
+    lr_mult: 2  #学习率系数
+  }
+  inner_product_param {
+    num_output: 17  #过滤器（filfter)的个数
+    weight_filler {  #权重初始化
+      type: &quot;xavier&quot;  #vaxier算法
+    }
+    bias_filler {  #偏置初始化
+      type: &quot;constant&quot;  #常数
+    }
+  }
+}
+
+layer {                 #准确度层
+  name: &quot;accuracy&quot;   #该层的名称
+  type: &quot;Accuracy&quot;    #该层的类型
+  bottom: &quot;ip1&quot;      #该层的输入
+  bottom: &quot;label&quot;     #该层的输入
+  top: &quot;accuracy&quot;     #该层的输出
+  include {
+    phase: TEST      #表明阶段，测试阶段（该层仅测试阶段使用）
+  }
+}
+
+layer {      #损失函数层
+  name: &quot;loss&quot;  #该层的名称
+  type: &quot;SoftmaxWithLoss&quot;  #该层的类型
+  bottom: &quot;conv3&quot;  #该层的输入
+  bottom: &quot;label&quot;  #该层的输入
+  top: &quot;loss&quot;  #该层的输出
+}
+
+
+
+
+数据层
+数据层用于输入lmdb，hdf5等格式的数据。
+lmdb为例
+layer {
+  name: &quot;data&quot;  #该层的名称
+  type: &quot;Data&quot;  #该层的类型
+  top: &quot;data&quot;  #该层的输出
+  top: &quot;label&quot;  #该层的输出
+  data_param {  #data层的参数
+    source: &quot;examples/HSI/HSI_train_lmdb&quot;  #输入
+    batch_size: 128  #批处理大小
+    backend: LMDB  #输入的数据格式
+  }
+  include: { phase: TRAIN }  #阶段，表明是训练阶段还是测试阶段
+}
+
+
+卷积层
+卷积层，是卷积神经网络（CNN）的核心层。
+示例：
+layer {
+  name: &quot;conv1&quot;  #该层的名称
+  type: &quot;Convolution&quot;  #该层的类型
+  bottom: &quot;data&quot;  #该层的输入
+  top: &quot;conv1&quot;  #该层的输出
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 0.1
+  }
+  convolution_param {  #卷积的参数
+    num_output: 64  #过滤器的个数
+    kernel_size: 9  #过滤器的大小
+    stride: 1  #卷积的步长
+    pad: 0  #指定在输入的每一边加上多少个像素
+    weight_filler {  #权重的初始化方法
+      type: &quot;gaussian&quot;  #类型，高斯。
+      std: 0.001  #高斯的标准平方差
+    }
+    bias_filler {  #偏置的初始化方法
+      type: &quot;constant&quot;  #类型，常数
+      value: 0  #偏置是0常数
+    }
+  }
+}
+</pre></div>
+</div>
+<p><strong>卷积层</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>lr_mult: 学习率的系数，最终的学习率是这个数乘以solver.prototxt配置文件中的base_lr。
+num_output: 卷积核（filter)的个数
+kernel_size: 卷积核的大小。
+stride: 卷积核的步长，默认为1。
+pad: 扩充边缘，默认为0，不扩充。 扩充的时候是左右、上下对称的，比如卷积核的大小为5*5，那么pad设置为2，则四个边缘都扩充2个像素，即宽度和高度都扩充了4个像素,这样卷积运算之后的特征图就不会变小。
+weight_filler: 权值初始化。 默认为“constant&quot;,值全为0，很多时候我们用&quot; gaussian &quot;算法来进行初始化。
+bias_filler: 偏置项的初始化。一般设置为&quot;constant&quot;,值全为0或者用&quot; gaussian &quot;算法来进行初始化。
+bias_term: 是否开启偏置项，默认为true, 开启
+输入：n*c0*w0*h0
+输出：n*c1*w1*h1
+其中，c1就是参数中的num_output，生成的特征图个数
+w1=(w0+2*pad-kernel_size)/stride+1;
+h1=(h0+2*pad-kernel_size)/stride+1;
+如果设置stride为1，前后两次卷积部分存在重叠。如果设置pad=(kernel_size-1)/2,则运算后，宽度和高度不变。
+</pre></div>
+</div>
+<p><strong>池化层</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>为了减少运算量和数据维度而设置的一种层
+kernel_size: 池化核大小。
+pool: 池化方法，默认为MAX。目前可用的方法有MAX, AVE
+pad: 和卷积层的pad的一样，进行边缘扩充。默认为0
+stride: 池化的步长，默认为1。一般我们设置为2，即不重叠。
+</pre></div>
+</div>
+<p><strong>激活层</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>对输入数据进行激活操作（实际上就是一种函数变换），是逐元素进行运算的。从bottom得到一个blob数据输入，运算后，从top输入一个blob数据。在运算过程中，没有改变数据的大小，即输入和输出的数据大小是相等的。
+示例
+layer {
+  name: &quot;relu1&quot;
+  type: &quot;ReLU&quot;
+  bottom: &quot;conv1&quot;
+  top: &quot;conv1&quot;
+}
+
+
+常用的激活函数有sigmoid, tanh, relu等，下面主要介绍RELU。
+ReLU是目前使用最多的激活函数，主要因为其收敛更快，并且能保持同样效果。
+标准的ReLU函数为max(x, 0)，当x&gt;0时，输出x; 当x&lt;=0时，输出0
+f(x)=max(x,0)
+可选参数：
+negative_slope：默认为0. 对标准的ReLU函数进行变化，如果设置了这个值，那么数据为负数时，就不再设置为0，而是用原始数据乘以negative_slope
+</pre></div>
+</div>
+<p><strong>全连接层</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>全连接层，把输入当作成一个向量，输出也是一个简单向量（把输入数据blobs的width和height全变为1）。
+输入： n*c0*h*w
+输出： n*c1*1*1
+示例：
+
+layer {
+  name: &quot;ip1&quot;   #该层的名称
+  type: &quot;InnerProduct&quot;  #该层的类型
+  bottom: &quot;conv3&quot;  #该层的输入
+  top: &quot;ip1&quot;  #该层的输出
+  param {  #参数
+    lr_mult: 1  #学习率系数
+  }
+  param {
+    lr_mult: 2  #学习率系数
+  }
+  inner_product_param {
+    num_output: 17  #过滤器（filfter)的个数
+    weight_filler {  #权重初始化
+      type: &quot;xavier&quot;  #vaxier算法
+    }
+    bias_filler {  #偏置初始化
+      type: &quot;constant&quot;  #常数
+    }
+  }
+}
+
+由于标签有17个，所以在全连接层的num_output的个数至少为17个，可以多，不可少。
+</pre></div>
+</div>
+<p><strong>accuracy层</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>输出分类（预测）精确度，只有test阶段才有，因此需要加入include参数。
+层类型：Accuracy
+
+layer {
+  name: &quot;accuracy&quot;   #该层的名称
+  type: &quot;Accuracy&quot;    #该层的类型
+  bottom: &quot;ip1&quot;      #该层的输入
+  bottom: &quot;label&quot;     #该层的输入
+  top: &quot;accuracy&quot;     #该层的输出
+  include {
+    phase: TEST      #表明阶段，测试阶段（该层仅测试阶段使用）
+  }
+}
+</pre></div>
+</div>
+<p><strong>Loss层</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">layer</span> <span class="p">{</span>
+  <span class="n">name</span><span class="p">:</span> <span class="s2">&quot;loss&quot;</span>  <span class="c1">#该层的名称</span>
+  <span class="nb">type</span><span class="p">:</span> <span class="s2">&quot;SoftmaxWithLoss&quot;</span>  <span class="c1">#该层的类型</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;conv3&quot;</span>  <span class="c1">#该层的输入</span>
+  <span class="n">bottom</span><span class="p">:</span> <span class="s2">&quot;label&quot;</span>  <span class="c1">#该层的输入</span>
+  <span class="n">top</span><span class="p">:</span> <span class="s2">&quot;loss&quot;</span>  <span class="c1">#该层的输出</span>
+<span class="p">}</span>
+<span class="c1">#单标签一般使用SoftmaxWithLoss</span>
+<span class="c1">#多标签一般使用EuclideanLoss</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="solver-prototxt">
+<h3>解决方案文件配置solver.prototxt<a class="headerlink" href="#solver-prototxt" title="永久链接至标题">¶</a></h3>
+<p>Solver方法一般用来解决loss函数的最小化问题。对于一个数据集D，需要优化的目标函数是整个数据集中所有数据loss的平均值。</p>
+<p>HSI_solver.prototxt的下载</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_solver</span><span class="o">.</span><span class="n">prototxt</span>
+</pre></div>
+</div>
+<p>HSI_solver.prototxt的参数
+参数设置：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>net : “examples/HSI/HSI_net.prototxt”   #网络配置文件的指向
+test_iter : 5  #样本总数/批处理个数（批处理个数在网络配置文件的data层配置）
+test_interval : 1000   #训练时迭代次数
+
+base_lr : 0.001  #基本学习率
+momentum : 0.9  #动量
+weight_decay: 0  #
+display : 100   #迭代多少次显示一次
+max_iter : 150000  #最大迭代次数
+snapshot : 5000  #迭代多少次保存一下结果（caffemodel和solverstate）
+snapshot_prefix : “examples/HSI/HSI” #保存结果（caffemodel和solverstate）的前缀，实际名称是$(snapshot_prefix)_iter_$(迭代次数). caffemodel和$(snapshot_prefix)_iter_$(迭代次数). solverstate
+solver_mode: GPU   #使用cpu还是gpu进行训练。cpu训练，solver_mode: CPU
+device_id: 0  #使用哪一个gpu进行训练。设备号从0开始。该参数不写，默认为0
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h3>训练<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>总共需要的文件
+HSI_net.prototxt(网络模型), HSI_solver.prototxt(解决方案)，HSI_train_lmdb, HSI_test_lmdb。</p>
+<p>HSI_net.prototxt的下载</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_net</span><span class="o">.</span><span class="n">prototxt</span>
+</pre></div>
+</div>
+<p>HSI_solver.prototxt的下载</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_solver</span><span class="o">.</span><span class="n">prototxt</span>
+</pre></div>
+</div>
+<p>训练
+在caffe主目录下输入以下命令</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">build</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">caffe</span> <span class="n">train</span> <span class="o">--</span><span class="n">solver</span> <span class="n">examples</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_solver</span><span class="o">.</span><span class="n">prototxt</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span> <span class="o">|</span><span class="n">tee</span> <span class="n">examples</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_train</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+<p>HSI_train.log：输出的日志，自己定义。</p>
+<p>在已训练的参数上继续训练
+准备：可以通过以下命令获得HSI_iter_10000.caffemodel和HSI_iter_10000.solverstate</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_iter_10000</span><span class="o">.</span><span class="n">caffemodel</span>
+<span class="n">wget</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.249</span><span class="o">/</span><span class="n">caffe</span><span class="o">/</span><span class="n">practice</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_iter_10000</span><span class="o">.</span><span class="n">solverstate</span>
+<span class="o">./</span><span class="n">build</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">caffe</span> <span class="n">train</span> <span class="o">--</span><span class="n">solver</span> <span class="n">examples</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_solver</span><span class="o">.</span><span class="n">prototxt</span> <span class="o">--</span><span class="n">snapshot</span> <span class="n">examples</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_iter_10000</span><span class="o">.</span><span class="n">solverstate</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span> <span class="o">|</span><span class="n">tee</span> <span class="n">examples</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_resume</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+<p>HSI_iter_10000.caffemodel(已训练的迭代10000次的模型)
+HSI_resume.log：输出的日志，自己定义。</p>
+<p>测试</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">build</span><span class="o">/</span><span class="n">tools</span><span class="o">/</span><span class="n">caffe</span> <span class="n">test</span> <span class="o">--</span><span class="n">model</span> <span class="n">examples</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_net</span><span class="o">.</span><span class="n">prototxt</span> <span class="o">--</span><span class="n">weights</span> <span class="n">examples</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_iter_10000</span><span class="o">.</span><span class="n">caffemodel</span> <span class="mi">2</span><span class="o">&gt;&amp;</span><span class="mi">1</span> <span class="o">|</span><span class="n">tee</span>  <span class="n">examples</span><span class="o">/</span><span class="n">HSI</span><span class="o">/</span><span class="n">HSI_test</span><span class="o">.</span><span class="n">log</span>
+</pre></div>
+</div>
+<p>HSI_test.log：输出的日志，自己定义。</p>
+</div>
+<div class="section" id="id9">
+<h3>工具使用<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>caffe自带以及自己写的脚本。</p>
+<p>详细使用说明在</p>
+<ul>
+<li><p class="first">使用caffe自带convert_imageset转换lmdb</p>
+<ul class="simple">
+<li>将图像和标签进行组织，然后使用convert_imageset转换</li>
+</ul>
+<p>组织形式</p>
+</li>
+<li><p class="first">mat转hdf5</p>
+<ul class="simple">
+<li>将特定格式的mat文件转换为lmdb，适用于多标签。</li>
+<li>数据的mat格式必须存储为n*c*h*w的形式，四维，n表示样本编号，c表示通道数，h表示图像的高度(行)，w表示图像的宽度（列）。</li>
+<li>标签的mat格式必须存储为n*c*h*w的形式，四维，n表示样本编号，c表示通道数，h表示图像的高度(行)，w表示图像的宽度（列）。</li>
+</ul>
+</li>
+<li><p class="first">计算图像均值</p>
+<ul class="simple">
+<li>使用caffe自带的compute_imgmean计算图像均值</li>
+</ul>
+</li>
+<li><p class="first">画网络图</p>
+<ul class="simple">
+<li>根据网络配置文件XXX_net.prototxt画出网络图</li>
+</ul>
+<img alt="../../../_images/HSI_net.prototxt.png" src="../../../_images/HSI_net.prototxt.png" />
+</li>
+<li><p class="first">根据日志画Loss曲线</p>
+<img alt="../../../_images/face_recognition_train_loss_iters.png" src="../../../_images/face_recognition_train_loss_iters.png" />
+<img alt="../../../_images/face_recognition_test_loss_iters.png" src="../../../_images/face_recognition_test_loss_iters.png" />
+<img alt="../../../_images/face_recognition_train_learning_iters.png" src="../../../_images/face_recognition_train_learning_iters.png" />
+<img alt="../../../_images/face_recognition_test_accuracy_iters.png" src="../../../_images/face_recognition_test_accuracy_iters.png" />
+</li>
+<li><p class="first">画特征图（Feature Map）</p>
+<img alt="../../../_images/face_recognition_data_feature.png" src="../../../_images/face_recognition_data_feature.png" />
+<img alt="../../../_images/face_recognition_conv1_feature.png" src="../../../_images/face_recognition_conv1_feature.png" />
+<img alt="../../../_images/face_recognition_conv2_feature.png" src="../../../_images/face_recognition_conv2_feature.png" />
+<img alt="../../../_images/face_recognition_conv3_feature.png" src="../../../_images/face_recognition_conv3_feature.png" />
+<img alt="../../../_images/face_recognition_conv4_feature.png" src="../../../_images/face_recognition_conv4_feature.png" />
+</li>
+<li><p class="first">将caffemodel转换为mat</p>
+</li>
+<li><p class="first">保存网络中间结果</p>
+<ul class="simple">
+<li>保存每一层神经元处理后的特征图以及特征值。</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="deepid">
+<h3>deepID的文档<a class="headerlink" href="#deepid" title="永久链接至标题">¶</a></h3>
+<p>增加deepID使用文档和分析文档，在http://192.168.1.249/doku.php/平台/深度学习平台/caffe例子/face_recognition都可以找到。
+practice/face_recognition/face_recognition_all.pdf
+practice/face_recognition/ caffe-face_recognition.pdf</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Caffe应用之人脸识别.html" class="btn btn-neutral float-right" title="Caffe应用之人脸识别例子" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="实验室深度学习简介" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

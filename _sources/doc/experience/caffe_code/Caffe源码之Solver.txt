@@ -1,0 +1,23 @@
+Caffe的Solver
+**************
+
+概述
+=======
+* Blob：是基础的数据结构，用来保存学习到的参数以及网络传输过程中产生数据。
+* Layer：是网络的基本单元，由此派生出了各种层。
+* Net：是网络的搭建，将Layer所派生出层类组合成网络。
+* Solver：是Net的求解。
+
+Solver
+======
+
+整体概览
+^^^^^^^^^
+
+
+待续。。。。。。。。。
+
+参考
+=====
+* http://www.cnblogs.com/louyihang-loves-baiyan/
+* https://www.zhihu.com/question/27982282/answer/39350629

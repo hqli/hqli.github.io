@@ -1,0 +1,121 @@
+Windows平台安装Caffe
+********************
+
+         更新时间 2017年4月11日
+概述
+=====
+
+Caffe在Linux下的安装，尤其是Ubuntu，很方便，就不多说了。这里重点说一下在Windows平台安装Caffe。
+
+**安装文档要先看官方文档 http://caffe.berkeleyvision.org/installation.html**
+
+* 为何选择Windows版本Caffe？
+
+	* 许多项目要求做成windows的可执行程序，就我而言做的项目全是Windows的~~。
+	* 如果是做研究写论文优先选择Linux。因为Linux版本的Caffe是亲儿子，使用方便，许多特性先在Linux版本Caffe实现，许多人脸识别，目标检测等实现都是基于Linux版本Caffe(占领市场的重要性，认真脸~~)。
+
+* 版本选择
+
+	* Windows下的Caffe有两个版本。一个是微软版本（https://github.com/Microsoft/caffe），一个是Caffe的Windows分支（https://github.com/BVLC/caffe/tree/windows）。
+	* 微软版本
+
+		* 优点：完全支持Visual Studio，可以将源码生成VS工程，单步调试。 
+		* 缺点：从较老的Caffe源码上fork，更新问题。
+	* Caffe的Windows分支
+
+		* 优点：一直更新，与时俱进。
+		* 缺点：不能完全支持Visual Studio，使用ninja取代vs的msvc作为编译器。如果不用ninja，强行用vs的msvc可以生成VS工程，但是出现找不到include_symbols.hpp问题。
+	* 最后选择微软版本用来学习Caffe源码，便于单步调试；选择Caffe的Windows分支作为实际应用。
+* 其他问题
+
+	* NVIDIA卡的计算能力达到3.0才能上cuDNN。
+	* 多看官方安装教程，很多博客安装教程都过时了~~~~~
+
+
+微软版本Caffe在Windows下的安装
+==============================
+根据https://github.com/Microsoft/caffe中的Readme.md安装。
+
+依赖使用Nuget管理。需要下载的软件NugetPackages已放在百度云网盘 http://pan.baidu.com/s/1eSpCzIE。
+
+
+Caffe的Windows分支正常编译
+===========================
+
+根据https://github.com/BVLC/caffe/tree/windows的readme安装。
+
+* 注意的地方
+
+	* 需要从github下载150M大小Caffe依赖文件，github网速慢的可怜~~
+	* 现在Caffe依赖文件名：libraries_v120_x64_py27_1.1.0.tar.bz2
+	* 下载地址： https://github.com/willyd/caffe-builder/releases
+	* 百度云网盘：http://pan.baidu.com/s/1dF7pujJ （当前时间段的最新文件，后面会过时，只能从上面链接下载）
+
+* 使用方式
+
+	* 下载上面提到的Caffe依赖文件
+	* 运行scripts\build_win.cmd
+	* 到了下载文件阶段，Control+C，中断批处理
+	* 将前面下载的Caffe依赖文件的文件放到了C:/Users/Administrator/.caffe/dependencies/download/文件夹下
+	* 再次运行scripts\build_win.cmd
+
+
+Caffe的Windows分支生成VS工程的不成功尝试
+========================================
+Caffe的Windows分支生成VS工程的不成功尝试。
+
+开发环境
+---------
+* Windows7
+* Visual Studio 2013
+* CUDA7.5
+* Cmake 3.4+
+* python（推荐Anacoda）
+
+步骤
+----------
+下载文件
+^^^^^^^^^
+* Windows-Caffe
+
+	* https://github.com/BVLC/caffe/archive/windows.zip
+	* 百度云网盘： http://pan.baidu.com/s/1dF7pujJ ，caffe-windows.zip下载时间2017-04-11。
+* Windows-Caffe依赖
+
+   	* 150M的文件，github网速慢的可怜，不提前下载，你懂得~~
+	* 依赖文件名：libraries_v120_x64_py27_1.1.0.tar.bz2
+	* 官方下载地址：https://github.com/willyd/caffe-builder/releases
+	* 百度云网盘 http://pan.baidu.com/s/1dF7pujJ （当前时间段的最新文件，后面会过时，只能从官方链接下载）
+
+Cmake生成VS工程
+^^^^^^^^^^^^^^^
+* 配置参数
+
+	* 使用CMake选择源代码文件夹（例如E:/document/caffe_code_analysis/caffe-windows）
+	* 使用CMake选择编译文件夹（例如E:/document/caffe_code_analysis/caffe-windows/build）
+	* 使用CMake选择编译器 == Visual Studio 12 2013 Win64，点击finish
+	* 关闭网络（不让它下载150M文件，github网速慢的可怜~~），点击configure，这个过程中会下载前面提到的Windows-Caffe依赖文件
+
+		* 状态框为：Downloading prebuilt dependencies to C:/Users/Administrator/.caffe/dependencies/download/libraries_v120_x64_py27_1.1.0.tar.bz2 [download 0% complete]
+		* 不出意外应该会报错，并弹出CMake的选项
+		* 关闭CMake
+	* 修改依赖文件
+
+		* 将之前下载的libraries_v120_x64_py27_1.1.0.tar.bz2的文件将其替换C:/Users/Administrator/.caffe/dependencies/download/下的文件
+	* 重新打开Cmake，修改Cmake的选项
+
+		* 重新打开Cmake
+		* CAFFE_BUILDING_STATIC_LIB改为勾选
+		* 将BLAS修改为Open
+		* 将USE_CUDNN改为不勾选
+	* 生成VS工程
+
+VS工程出现问题
+^^^^^^^^^^^
+* 运行VS工程找不到include_symbols.hpp
+* issue：https://github.com/willyd/caffe/issues/19
+
+	* 最后很多人都是默许了ninja代替vs的msvc的做法
+	* 我想说的是，如果我就是想在windows平台对caffe源码进行单步调试，脸会不会被打肿。。。。。
+	* 后期希望会优化
+* 有人找到解决方案，给我说一下，linkhqli@163.com，O(∩_∩)O谢谢

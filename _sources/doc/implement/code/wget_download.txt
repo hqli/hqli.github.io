@@ -1,0 +1,16 @@
+wget批量下载
+========
+
+wget批量下载一般需要添加参数-r -np -nc -k -e robots=off -b -q 
+
+可以通过-i 指定多个下载路径
+
+wget -r -np -nc -k -e robots=off -b -q -i centos.list
+
+centos.list内容
+
+::
+
+    http://ftp.xdlinux.info/epel/RPM-GPG-KEY-EPEL-7
+    http://ftp.xdlinux.info/epel/7/x86_64/
+    

@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Windows平台安装Caffe &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="Caffe源码结构" href="Caffe源码结构.html" />
+    <link rel="prev" title="Caffe源码分析及例子" href="index.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../implement/index.html">实现</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">经验</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Caffe源码分析及例子</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Windows平台安装Caffe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码结构.html">Caffe源码结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Blob.html">Caffe的Blob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Layer.html">Caffe的Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Net.html">Caffe的Net</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Solver.html">Caffe的Solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe应用之人脸识别.html">Caffe应用之人脸识别例子</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码的前向传播与后向传播.html">Caffe源码的前向传播与后向传播</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../caffe_DP_lecture/index.html">实验室深度学习简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../study_style/index.html">学习方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">经验</a> &raquo;</li>
+        
+          <li><a href="index.html">Caffe源码分析及例子</a> &raquo;</li>
+        
+      <li>Windows平台安装Caffe</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/experience/caffe_code/Windows平台安装Caffe.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="windowscaffe">
+<h1>Windows平台安装Caffe<a class="headerlink" href="#windowscaffe" title="永久链接至标题">¶</a></h1>
+<blockquote>
+<div>更新时间 2017年4月11日</div></blockquote>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>Caffe在Linux下的安装，尤其是Ubuntu，很方便，就不多说了。这里重点说一下在Windows平台安装Caffe。</p>
+<p><strong>安装文档要先看官方文档 http://caffe.berkeleyvision.org/installation.html</strong></p>
+<ul>
+<li><p class="first">为何选择Windows版本Caffe？</p>
+<blockquote>
+<div><ul class="simple">
+<li>许多项目要求做成windows的可执行程序，就我而言做的项目全是Windows的~~。</li>
+<li>如果是做研究写论文优先选择Linux。因为Linux版本的Caffe是亲儿子，使用方便，许多特性先在Linux版本Caffe实现，许多人脸识别，目标检测等实现都是基于Linux版本Caffe(占领市场的重要性，认真脸~~)。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">版本选择</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Windows下的Caffe有两个版本。一个是微软版本（<a class="reference external" href="https://github.com/Microsoft/caffe">https://github.com/Microsoft/caffe</a>），一个是Caffe的Windows分支（<a class="reference external" href="https://github.com/BVLC/caffe/tree/windows">https://github.com/BVLC/caffe/tree/windows</a>）。</p>
+</li>
+<li><p class="first">微软版本</p>
+<blockquote>
+<div><ul class="simple">
+<li>优点：完全支持Visual Studio，可以将源码生成VS工程，单步调试。</li>
+<li>缺点：从较老的Caffe源码上fork，更新问题。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Caffe的Windows分支</p>
+<blockquote>
+<div><ul class="simple">
+<li>优点：一直更新，与时俱进。</li>
+<li>缺点：不能完全支持Visual Studio，使用ninja取代vs的msvc作为编译器。如果不用ninja，强行用vs的msvc可以生成VS工程，但是出现找不到include_symbols.hpp问题。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">最后选择微软版本用来学习Caffe源码，便于单步调试；选择Caffe的Windows分支作为实际应用。</p>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">其他问题</p>
+<blockquote>
+<div><ul class="simple">
+<li>NVIDIA卡的计算能力达到3.0才能上cuDNN。</li>
+<li>多看官方安装教程，很多博客安装教程都过时了~~~~~</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="caffewindows">
+<h2>微软版本Caffe在Windows下的安装<a class="headerlink" href="#caffewindows" title="永久链接至标题">¶</a></h2>
+<p>根据https://github.com/Microsoft/caffe中的Readme.md安装。</p>
+<p>依赖使用Nuget管理。需要下载的软件NugetPackages已放在百度云网盘 <a class="reference external" href="http://pan.baidu.com/s/1eSpCzIE">http://pan.baidu.com/s/1eSpCzIE</a>。</p>
+</div>
+<div class="section" id="id2">
+<h2>Caffe的Windows分支正常编译<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>根据https://github.com/BVLC/caffe/tree/windows的readme安装。</p>
+<ul>
+<li><p class="first">注意的地方</p>
+<blockquote>
+<div><ul class="simple">
+<li>需要从github下载150M大小Caffe依赖文件，github网速慢的可怜~~</li>
+<li>现在Caffe依赖文件名：libraries_v120_x64_py27_1.1.0.tar.bz2</li>
+<li>下载地址： <a class="reference external" href="https://github.com/willyd/caffe-builder/releases">https://github.com/willyd/caffe-builder/releases</a></li>
+<li>百度云网盘：<a class="reference external" href="http://pan.baidu.com/s/1dF7pujJ">http://pan.baidu.com/s/1dF7pujJ</a> （当前时间段的最新文件，后面会过时，只能从上面链接下载）</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">使用方式</p>
+<blockquote>
+<div><ul class="simple">
+<li>下载上面提到的Caffe依赖文件</li>
+<li>运行scriptsbuild_win.cmd</li>
+<li>到了下载文件阶段，Control+C，中断批处理</li>
+<li>将前面下载的Caffe依赖文件的文件放到了C:/Users/Administrator/.caffe/dependencies/download/文件夹下</li>
+<li>再次运行scriptsbuild_win.cmd</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="caffewindowsvs">
+<h2>Caffe的Windows分支生成VS工程的不成功尝试<a class="headerlink" href="#caffewindowsvs" title="永久链接至标题">¶</a></h2>
+<p>Caffe的Windows分支生成VS工程的不成功尝试。</p>
+<div class="section" id="id3">
+<h3>开发环境<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li>Windows7</li>
+<li>Visual Studio 2013</li>
+<li>CUDA7.5</li>
+<li>Cmake 3.4+</li>
+<li>python（推荐Anacoda）</li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>步骤<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id5">
+<h4>下载文件<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h4>
+<ul>
+<li><p class="first">Windows-Caffe</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://github.com/BVLC/caffe/archive/windows.zip">https://github.com/BVLC/caffe/archive/windows.zip</a></li>
+<li>百度云网盘： <a class="reference external" href="http://pan.baidu.com/s/1dF7pujJ">http://pan.baidu.com/s/1dF7pujJ</a> ，caffe-windows.zip下载时间2017-04-11。</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Windows-Caffe依赖</p>
+<blockquote>
+<div><ul class="simple">
+<li>150M的文件，github网速慢的可怜，不提前下载，你懂得~~</li>
+<li>依赖文件名：libraries_v120_x64_py27_1.1.0.tar.bz2</li>
+<li>官方下载地址：<a class="reference external" href="https://github.com/willyd/caffe-builder/releases">https://github.com/willyd/caffe-builder/releases</a></li>
+<li>百度云网盘 <a class="reference external" href="http://pan.baidu.com/s/1dF7pujJ">http://pan.baidu.com/s/1dF7pujJ</a> （当前时间段的最新文件，后面会过时，只能从官方链接下载）</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="cmakevs">
+<h4>Cmake生成VS工程<a class="headerlink" href="#cmakevs" title="永久链接至标题">¶</a></h4>
+<ul>
+<li><p class="first">配置参数</p>
+<blockquote>
+<div><ul>
+<li><p class="first">使用CMake选择源代码文件夹（例如E:/document/caffe_code_analysis/caffe-windows）</p>
+</li>
+<li><p class="first">使用CMake选择编译文件夹（例如E:/document/caffe_code_analysis/caffe-windows/build）</p>
+</li>
+<li><p class="first">使用CMake选择编译器 == Visual Studio 12 2013 Win64，点击finish</p>
+</li>
+<li><p class="first">关闭网络（不让它下载150M文件，github网速慢的可怜~~），点击configure，这个过程中会下载前面提到的Windows-Caffe依赖文件</p>
+<blockquote>
+<div><ul class="simple">
+<li>状态框为：Downloading prebuilt dependencies to C:/Users/Administrator/.caffe/dependencies/download/libraries_v120_x64_py27_1.1.0.tar.bz2 [download 0% complete]</li>
+<li>不出意外应该会报错，并弹出CMake的选项</li>
+<li>关闭CMake</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">修改依赖文件</p>
+<blockquote>
+<div><ul class="simple">
+<li>将之前下载的libraries_v120_x64_py27_1.1.0.tar.bz2的文件将其替换C:/Users/Administrator/.caffe/dependencies/download/下的文件</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">重新打开Cmake，修改Cmake的选项</p>
+<blockquote>
+<div><ul class="simple">
+<li>重新打开Cmake</li>
+<li>CAFFE_BUILDING_STATIC_LIB改为勾选</li>
+<li>将BLAS修改为Open</li>
+<li>将USE_CUDNN改为不勾选</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">生成VS工程</p>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="vs">
+<h4>VS工程出现问题<a class="headerlink" href="#vs" title="永久链接至标题">¶</a></h4>
+<ul>
+<li><p class="first">运行VS工程找不到include_symbols.hpp</p>
+</li>
+<li><p class="first">issue：<a class="reference external" href="https://github.com/willyd/caffe/issues/19">https://github.com/willyd/caffe/issues/19</a></p>
+<blockquote>
+<div><ul class="simple">
+<li>最后很多人都是默许了ninja代替vs的msvc的做法</li>
+<li>我想说的是，如果我就是想在windows平台对caffe源码进行单步调试，脸会不会被打肿。。。。。</li>
+<li>后期希望会优化</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">有人找到解决方案，给我说一下，<a class="reference external" href="mailto:linkhqli&#37;&#52;&#48;163&#46;com">linkhqli<span>&#64;</span>163<span>&#46;</span>com</a>，O(∩_∩)O谢谢</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Caffe源码结构.html" class="btn btn-neutral float-right" title="Caffe源码结构" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Caffe源码分析及例子" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

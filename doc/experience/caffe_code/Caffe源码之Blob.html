@@ -1,0 +1,431 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Caffe的Blob &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="Caffe的Layer" href="Caffe源码之Layer.html" />
+    <link rel="prev" title="Caffe源码结构" href="Caffe源码结构.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../implement/index.html">实现</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">经验</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Caffe源码分析及例子</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Windows平台安装Caffe.html">Windows平台安装Caffe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码结构.html">Caffe源码结构</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Caffe的Blob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Layer.html">Caffe的Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Net.html">Caffe的Net</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Solver.html">Caffe的Solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe应用之人脸识别.html">Caffe应用之人脸识别例子</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码的前向传播与后向传播.html">Caffe源码的前向传播与后向传播</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../caffe_DP_lecture/index.html">实验室深度学习简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../study_style/index.html">学习方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">经验</a> &raquo;</li>
+        
+          <li><a href="index.html">Caffe源码分析及例子</a> &raquo;</li>
+        
+      <li>Caffe的Blob</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/experience/caffe_code/Caffe源码之Blob.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="caffeblob">
+<h1>Caffe的Blob<a class="headerlink" href="#caffeblob" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li>Blob：是基础的数据结构，用来保存学习到的参数以及网络传输过程中产生数据。</li>
+<li>Layer：是网络的基本单元，由此派生出了各种层。</li>
+<li>Net：是网络的搭建，将Layer所派生出层类组合成网络。</li>
+<li>Solver：是Net的求解。</li>
+</ul>
+</div>
+<div class="section" id="blob">
+<h2>Blob<a class="headerlink" href="#blob" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id2">
+<h3>源码文件<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li>include/blob.hpp</li>
+<li>src/blob.cpp</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>整体概览<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">&lt;</span><span class="n">typename</span> <span class="n">Dtype</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Blob</span> <span class="p">{</span>
+ <span class="n">public</span><span class="p">:</span>
+  <span class="n">Blob</span><span class="p">()</span>
+       <span class="p">:</span> <span class="n">data_</span><span class="p">(),</span> <span class="n">diff_</span><span class="p">(),</span> <span class="n">count_</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">capacity_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+
+  <span class="n">explicit</span> <span class="n">Blob</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">num</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">channels</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">height</span><span class="p">,</span>
+              <span class="n">const</span> <span class="nb">int</span> <span class="n">width</span><span class="p">);</span>
+  <span class="n">explicit</span> <span class="n">Blob</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;&amp;</span> <span class="n">shape</span><span class="p">);</span>
+  <span class="n">void</span> <span class="n">Reshape</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;&amp;</span> <span class="n">shape</span><span class="p">);</span>
+  <span class="n">void</span> <span class="n">Reshape</span><span class="p">(</span><span class="n">const</span> <span class="n">BlobShape</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">);</span>
+  <span class="n">inline</span> <span class="nb">int</span> <span class="n">count</span><span class="p">()</span> <span class="n">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">count_</span><span class="p">;</span> <span class="p">}</span>
+  <span class="o">...</span>
+
+ <span class="n">protected</span><span class="p">:</span>
+  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SyncedMemory</span><span class="o">&gt;</span> <span class="n">data_</span><span class="p">;</span>
+  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SyncedMemory</span><span class="o">&gt;</span> <span class="n">diff_</span><span class="p">;</span>
+  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SyncedMemory</span><span class="o">&gt;</span> <span class="n">shape_data_</span><span class="p">;</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">shape_</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">count_</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">capacity_</span><span class="p">;</span>
+  <span class="n">DISABLE_COPY_AND_ASSIGN</span><span class="p">(</span><span class="n">Blob</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>成员变量<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span><span class="p">:</span>
+  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SyncedMemory</span><span class="o">&gt;</span> <span class="n">data_</span><span class="p">;</span>
+  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SyncedMemory</span><span class="o">&gt;</span> <span class="n">diff_</span><span class="p">;</span>
+  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SyncedMemory</span><span class="o">&gt;</span> <span class="n">shape_data_</span><span class="p">;</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">shape_</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">count_</span><span class="p">;</span>
+  <span class="nb">int</span> <span class="n">capacity_</span><span class="p">;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>BLob只是一个基本的数据结构，因此内部的变量相对较少。</li>
+<li>首先是data_指针，指针类型是shared_ptr，属于boost库的一个智能指针，这一部分主要用来申请内存存储data，data主要是正向传播的时候用的。</li>
+<li>同理，diff_主要用来存储偏差，update data，shape_data和shape_都是存储Blob的形状，一个是老版本一个是新版本。</li>
+<li>count表示Blob中的元素个数，也就是个数*通道数*高度*宽度,capacity表示当前的元素个数，因为Blob可能会reshape。</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>成员函数<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Blob</span><span class="p">()</span>
+     <span class="p">:</span> <span class="n">data_</span><span class="p">(),</span> <span class="n">diff_</span><span class="p">(),</span> <span class="n">count_</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">capacity_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="n">explicit</span> <span class="n">Blob</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">num</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">channels</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">height</span><span class="p">,</span>
+            <span class="n">const</span> <span class="nb">int</span> <span class="n">width</span><span class="p">);</span>
+<span class="n">explicit</span> <span class="n">Blob</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;&amp;</span> <span class="n">shape</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Blob</span></code> 作为一个最基础的类，其中构造函数开辟一个内存空间来存储数据。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">Reshape</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;&amp;</span> <span class="n">shape</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">Reshape</span><span class="p">(</span><span class="n">const</span> <span class="n">BlobShape</span><span class="o">&amp;</span> <span class="n">shape</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Reshape</span></code> 函数在Layer中的reshape或者forward操作中来adjust dimension。同时在改变Blob大小时，内存将会被重新分配如果内存大小不够了，并且额外的内存将不会被释放。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">inline</span> <span class="nb">int</span> <span class="n">count</span><span class="p">()</span> <span class="n">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">count_</span><span class="p">;</span> <span class="p">}</span>
+<span class="n">inline</span> <span class="nb">int</span> <span class="n">count</span><span class="p">(</span><span class="nb">int</span> <span class="n">start_axis</span><span class="p">,</span> <span class="nb">int</span> <span class="n">end_axis</span><span class="p">)</span> <span class="n">const</span>
+<span class="n">inline</span> <span class="nb">int</span> <span class="n">count</span><span class="p">(</span><span class="nb">int</span> <span class="n">start_axis</span><span class="p">)</span> <span class="n">const</span>
+</pre></div>
+</div>
+<p>Blob类里面有重载很多个count()函数，主要还是为了统计Blob的容量（volume），或者是某一片（slice），从某个axis到具体某个axis的shape乘积。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>inline int CanonicalAxisIndex(int axis_index)``
+</pre></div>
+</div>
+<p>对于Blob中的4个基本变量num,channel,height,width可以直接通过shape(0),shape(1),shape(2),shape(3)来访问。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">inline</span> <span class="nb">int</span> <span class="n">offset</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">w</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">inline</span> <span class="nb">int</span> <span class="n">offset</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;&amp;</span> <span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>offset计算的方式也支持两种方式，一种直接指定n,c,h,w或者放到一个vector中进行计算，偏差是根据对应的n,c,h,w，返回的offset是
+<code class="docutils literal notranslate"><span class="pre">((n</span> <span class="pre">*</span> <span class="pre">channels()</span> <span class="pre">+</span> <span class="pre">c)</span> <span class="pre">*</span> <span class="pre">height()</span> <span class="pre">+</span> <span class="pre">h)</span> <span class="pre">*</span> <span class="pre">width()</span> <span class="pre">+</span> <span class="pre">w</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>void CopyFrom(const Blob&lt;Dtype&gt;&amp; source, bool copy_diff = false,bool reshape = false);``
+</pre></div>
+</div>
+<p>从一个blob中copy数据 ，通过开关控制是否copy_diff,如果是False则copy data。reshape控制是否需要reshape。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">inline</span> <span class="n">Dtype</span> <span class="n">data_at</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">c</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">h</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">inline</span> <span class="n">Dtype</span> <span class="n">diff_at</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">c</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">h</span><span class="p">,</span> <span class="n">const</span> <span class="nb">int</span> <span class="n">w</span><span class="p">)</span>
+<span class="n">inline</span> <span class="n">Dtype</span> <span class="n">data_at</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;&amp;</span> <span class="n">index</span><span class="p">)</span>
+<span class="n">inline</span> <span class="n">Dtype</span> <span class="n">diff_at</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;&amp;</span> <span class="n">index</span><span class="p">)</span>
+<span class="n">inline</span> <span class="n">const</span> <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SyncedMemory</span><span class="o">&gt;&amp;</span> <span class="n">data</span><span class="p">()</span>
+<span class="n">inline</span> <span class="n">const</span> <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">SyncedMemory</span><span class="o">&gt;&amp;</span> <span class="n">diff</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>这一部分函数主要通过给定的位置访问数据，根据位置计算与数据起始的偏差offset，再通过cpu_data*指针获得地址。下面几个函数都是获得</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">const</span> <span class="n">Dtype</span><span class="o">*</span> <span class="n">cpu_data</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">void</span> <span class="n">set_cpu_data</span><span class="p">(</span><span class="n">Dtype</span><span class="o">*</span> <span class="n">data</span><span class="p">);</span>
+<span class="n">const</span> <span class="nb">int</span><span class="o">*</span> <span class="n">gpu_shape</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">const</span> <span class="n">Dtype</span><span class="o">*</span> <span class="n">gpu_data</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">const</span> <span class="n">Dtype</span><span class="o">*</span> <span class="n">cpu_diff</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">const</span> <span class="n">Dtype</span><span class="o">*</span> <span class="n">gpu_diff</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">Dtype</span><span class="o">*</span> <span class="n">mutable_cpu_data</span><span class="p">();</span>
+<span class="n">Dtype</span><span class="o">*</span> <span class="n">mutable_gpu_data</span><span class="p">();</span>
+<span class="n">Dtype</span><span class="o">*</span> <span class="n">mutable_cpu_diff</span><span class="p">();</span>
+<span class="n">Dtype</span><span class="o">*</span> <span class="n">mutable_gpu_diff</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>可以看到这里有data和diff两类数据，而这个diff就是我们所熟知的偏差，前者主要存储前向传递的数据，而后者存储的是反向传播中的梯度</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">&lt;</span><span class="n">typename</span> <span class="n">Dtype</span><span class="o">&gt;</span>
+<span class="n">void</span> <span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">::</span><span class="n">Update</span><span class="p">()</span> <span class="p">{</span>
+  <span class="o">//</span> <span class="n">We</span> <span class="n">will</span> <span class="n">perform</span> <span class="n">update</span> <span class="n">based</span> <span class="n">on</span> <span class="n">where</span> <span class="n">the</span> <span class="n">data</span> <span class="ow">is</span> <span class="n">located</span><span class="o">.</span>
+  <span class="n">switch</span> <span class="p">(</span><span class="n">data_</span><span class="o">-&gt;</span><span class="n">head</span><span class="p">())</span> <span class="p">{</span>
+  <span class="n">case</span> <span class="n">SyncedMemory</span><span class="p">::</span><span class="n">HEAD_AT_CPU</span><span class="p">:</span>
+    <span class="o">//</span> <span class="n">perform</span> <span class="n">computation</span> <span class="n">on</span> <span class="n">CPU</span>
+    <span class="n">caffe_axpy</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">(</span><span class="n">count_</span><span class="p">,</span> <span class="n">Dtype</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">const</span> <span class="n">Dtype</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">diff_</span><span class="o">-&gt;</span><span class="n">cpu_data</span><span class="p">()),</span>
+        <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">data_</span><span class="o">-&gt;</span><span class="n">mutable_cpu_data</span><span class="p">()));</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="n">case</span> <span class="n">SyncedMemory</span><span class="p">::</span><span class="n">HEAD_AT_GPU</span><span class="p">:</span>
+  <span class="n">case</span> <span class="n">SyncedMemory</span><span class="p">::</span><span class="n">SYNCED</span><span class="p">:</span>
+<span class="c1">#ifndef CPU_ONLY</span>
+    <span class="o">//</span> <span class="n">perform</span> <span class="n">computation</span> <span class="n">on</span> <span class="n">GPU</span>
+    <span class="n">caffe_gpu_axpy</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">(</span><span class="n">count_</span><span class="p">,</span> <span class="n">Dtype</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+        <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">const</span> <span class="n">Dtype</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">diff_</span><span class="o">-&gt;</span><span class="n">gpu_data</span><span class="p">()),</span>
+        <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">data_</span><span class="o">-&gt;</span><span class="n">mutable_gpu_data</span><span class="p">()));</span>
+<span class="c1">#else</span>
+    <span class="n">NO_GPU</span><span class="p">;</span>
+<span class="c1">#endif</span>
+    <span class="k">break</span><span class="p">;</span>
+  <span class="n">default</span><span class="p">:</span>
+    <span class="n">LOG</span><span class="p">(</span><span class="n">FATAL</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;Syncedmem not initialized.&quot;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这个函数在caffe的util下面的match-functions.cpp里面，主要是负责了线性代数库的调用，实现的功能是
+<code class="docutils literal notranslate"><span class="pre">Y</span> <span class="pre">=</span> <span class="pre">alpha*X+beta*Y</span></code>。 即blob里面的data部分减去diff部分</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">FromProto</span><span class="p">(</span><span class="n">const</span> <span class="n">BlobProto</span><span class="o">&amp;</span> <span class="n">proto</span><span class="p">,</span> <span class="nb">bool</span> <span class="n">reshape</span> <span class="o">=</span> <span class="n">true</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">ToProto</span><span class="p">(</span><span class="n">BlobProto</span><span class="o">*</span> <span class="n">proto</span><span class="p">,</span> <span class="nb">bool</span> <span class="n">write_diff</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span> <span class="n">const</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这两个函数主要是将数据序列化，存储到BlobProto，这里说到Proto是谷歌的一个数据序列化的存储格式，可以实现语言、平台无关、可扩展的序列化结构数据格式。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Dtype</span> <span class="n">asum_data</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">Dtype</span> <span class="n">asum_diff</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">Dtype</span> <span class="n">sumsq_data</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">Dtype</span> <span class="n">sumsq_diff</span><span class="p">()</span> <span class="n">const</span><span class="p">;</span>
+<span class="n">void</span> <span class="n">scale_data</span><span class="p">(</span><span class="n">Dtype</span> <span class="n">scale_factor</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">scale_diff</span><span class="p">(</span><span class="n">Dtype</span> <span class="n">scale_factor</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>asum表示求L1范数，sumsq表示求L2范数，scale表示乘法，乘以一个因子。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">ShareData</span><span class="p">(</span><span class="n">const</span> <span class="n">Blob</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">scale_diff</span><span class="p">(</span><span class="n">const</span> <span class="n">Blob</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>一个是共享data，一个是共享diff，具体就是将别的blob的data和响应的diff指针给这个Blob，实现数据的共享。同时需要注意的是这个操作会引起这个Blob里面的SyncedMemory被释放，因为shared_ptr指针被用=重置的时候回调用响应的析构器。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bool</span> <span class="n">ShapeEquals</span><span class="p">(</span><span class="n">const</span> <span class="n">BlobProto</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>比较两个Blob形状是否相同</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>参考<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.cnblogs.com/louyihang-loves-baiyan/">http://www.cnblogs.com/louyihang-loves-baiyan/</a></li>
+<li><a class="reference external" href="https://www.zhihu.com/question/27982282/answer/39350629">https://www.zhihu.com/question/27982282/answer/39350629</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Caffe源码之Layer.html" class="btn btn-neutral float-right" title="Caffe的Layer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Caffe源码结构.html" class="btn btn-neutral" title="Caffe源码结构" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

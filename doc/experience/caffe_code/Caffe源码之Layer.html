@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Caffe的Layer &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="Caffe的Net" href="Caffe源码之Net.html" />
+    <link rel="prev" title="Caffe的Blob" href="Caffe源码之Blob.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../implement/index.html">实现</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">经验</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Caffe源码分析及例子</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Windows平台安装Caffe.html">Windows平台安装Caffe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码结构.html">Caffe源码结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Blob.html">Caffe的Blob</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Caffe的Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Net.html">Caffe的Net</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Solver.html">Caffe的Solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe应用之人脸识别.html">Caffe应用之人脸识别例子</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码的前向传播与后向传播.html">Caffe源码的前向传播与后向传播</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../caffe_DP_lecture/index.html">实验室深度学习简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../study_style/index.html">学习方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">经验</a> &raquo;</li>
+        
+          <li><a href="index.html">Caffe源码分析及例子</a> &raquo;</li>
+        
+      <li>Caffe的Layer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/experience/caffe_code/Caffe源码之Layer.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="caffelayer">
+<h1>Caffe的Layer<a class="headerlink" href="#caffelayer" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>概述<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li>Blob：是基础的数据结构，用来保存学习到的参数以及网络传输过程中产生数据。</li>
+<li>Layer：是网络的基本单元，由此派生出了各种层。</li>
+<li>Net：是网络的搭建，将Layer所派生出层类组合成网络。</li>
+<li>Solver：是Net的求解。</li>
+</ul>
+</div>
+<div class="section" id="layer">
+<h2>Layer<a class="headerlink" href="#layer" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id2">
+<h3>源码文件<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">文件夹</span></code> 表示文件夹</p>
+<ul class="simple">
+<li>include/layer.hpp</li>
+<li>include/<code class="docutils literal notranslate"><span class="pre">layer</span></code>/...</li>
+<li>src/layer.cpp</li>
+<li>src/<code class="docutils literal notranslate"><span class="pre">layer</span></code>/...</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>整体概览<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">&lt;</span><span class="n">typename</span> <span class="n">Dtype</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">Layer</span> <span class="p">{</span>
+ <span class="n">public</span><span class="p">:</span>
+
+  <span class="n">explicit</span> <span class="n">Layer</span><span class="p">(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">)</span>
+    <span class="p">:</span> <span class="n">layer_param_</span><span class="p">(</span><span class="n">param</span><span class="p">),</span> <span class="n">is_shared_</span><span class="p">(</span><span class="n">false</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+  <span class="n">virtual</span> <span class="o">~</span><span class="n">Layer</span><span class="p">()</span> <span class="p">{}</span>
+  <span class="n">inline</span> <span class="n">Dtype</span> <span class="n">Forward</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">,</span>
+      <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">);</span>
+  <span class="n">inline</span> <span class="n">void</span> <span class="n">Backward</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">,</span>
+      <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;&amp;</span> <span class="n">propagate_down</span><span class="p">,</span>
+      <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">);</span>
+  <span class="o">...</span>
+
+ <span class="n">protected</span><span class="p">:</span>
+  <span class="n">LayerParameter</span> <span class="n">layer_param_</span><span class="p">;</span>
+  <span class="n">Phase</span> <span class="n">phase_</span><span class="p">;</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">blobs_</span><span class="p">;</span>
+  <span class="n">vector</span><span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span> <span class="n">param_propagate_down_</span><span class="p">;</span>
+  <span class="o">...</span>
+
+ <span class="n">private</span><span class="p">:</span>
+  <span class="nb">bool</span> <span class="n">is_shared_</span><span class="p">;</span>
+  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">boost</span><span class="p">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">forward_mutex_</span><span class="p">;</span>
+  <span class="n">void</span> <span class="n">InitMutex</span><span class="p">();</span>
+  <span class="n">void</span> <span class="n">Lock</span><span class="p">();</span>
+  <span class="n">void</span> <span class="n">Unlock</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>InitMutex()、Lock()、Unlock()在src/layer.cpp中实现。</p>
+</div>
+<div class="section" id="id4">
+<h3>成员变量<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protected</span><span class="p">:</span>
+ <span class="o">/**</span> <span class="n">The</span> <span class="n">protobuf</span> <span class="n">that</span> <span class="n">stores</span> <span class="n">the</span> <span class="n">layer</span> <span class="n">parameters</span> <span class="o">*/</span>
+ <span class="n">LayerParameter</span> <span class="n">layer_param_</span><span class="p">;</span>
+ <span class="o">/**</span> <span class="n">The</span> <span class="n">phase</span><span class="p">:</span> <span class="n">TRAIN</span> <span class="ow">or</span> <span class="n">TEST</span> <span class="o">*/</span>
+ <span class="n">Phase</span> <span class="n">phase_</span><span class="p">;</span>
+ <span class="o">/**</span> <span class="n">The</span> <span class="n">vector</span> <span class="n">that</span> <span class="n">stores</span> <span class="n">the</span> <span class="n">learnable</span> <span class="n">parameters</span> <span class="k">as</span> <span class="n">a</span> <span class="nb">set</span> <span class="n">of</span> <span class="n">blobs</span><span class="o">.</span> <span class="o">*/</span>
+ <span class="n">vector</span><span class="o">&lt;</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">blobs_</span><span class="p">;</span>
+ <span class="o">/**</span> <span class="n">Vector</span> <span class="n">indicating</span> <span class="n">whether</span> <span class="n">to</span> <span class="n">compute</span> <span class="n">the</span> <span class="n">diff</span> <span class="n">of</span> <span class="n">each</span> <span class="n">param</span> <span class="n">blob</span><span class="o">.</span> <span class="o">*/</span>
+ <span class="n">vector</span><span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;</span> <span class="n">param_propagate_down_</span><span class="p">;</span>
+ <span class="o">/**</span> <span class="n">The</span> <span class="n">vector</span> <span class="n">that</span> <span class="n">indicates</span> <span class="n">whether</span> <span class="n">each</span> <span class="n">top</span> <span class="n">blob</span> <span class="n">has</span> <span class="n">a</span> <span class="n">non</span><span class="o">-</span><span class="n">zero</span> <span class="n">weight</span> <span class="ow">in</span>
+  <span class="o">*</span>  <span class="n">the</span> <span class="n">objective</span> <span class="n">function</span><span class="o">.</span> <span class="o">*/</span>
+ <span class="n">vector</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="n">loss_</span><span class="p">;</span>
+<span class="n">private</span><span class="p">:</span>
+ <span class="o">/**</span> <span class="n">Whether</span> <span class="n">this</span> <span class="n">layer</span> <span class="ow">is</span> <span class="n">actually</span> <span class="n">shared</span> <span class="n">by</span> <span class="n">other</span> <span class="n">nets</span><span class="o">*/</span>
+ <span class="nb">bool</span> <span class="n">is_shared_</span><span class="p">;</span>
+ <span class="o">/**</span> <span class="n">The</span> <span class="n">mutex</span> <span class="k">for</span> <span class="n">sequential</span> <span class="n">forward</span> <span class="k">if</span> <span class="n">this</span> <span class="n">layer</span> <span class="ow">is</span> <span class="n">shared</span> <span class="o">*/</span>
+ <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">boost</span><span class="p">::</span><span class="n">mutex</span><span class="o">&gt;</span> <span class="n">forward_mutex_</span><span class="p">;</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">layer_param_</span></code> 用于保存layer的参数</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">phase_</span></code> 标定阶段是train还是test</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">blobs_</span></code> vector类型，是Blob的一个集合，保存了learnable参数, <strong>weight和bias分开保存在两个blob中</strong></p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">param_propagate_down_</span></code> vector类型，标志位是否要计算反向传递的梯度</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">loss_</span></code> vector类型，每个top blob是否有非零的权重weight</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">is_shared_</span></code> 表明该layer是否被其他net共享</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">forward_mutex_</span></code> 在当前layer被其他net共享情况下，通过加锁来保证前向传递时的数据一致性</p>
+</li>
+<li><p class="first"><code class="docutils literal notranslate"><span class="pre">layer_param_</span></code> 详解</p>
+<blockquote>
+<div><ul>
+<li><p class="first">layer_param_是LayerParameter类型（protobuf定义的一组结构），定义在src/caffe/proto/caffe.cc</p>
+</li>
+<li><p class="first">src/caffe/proto/caffe.cc是由src/caffe/proto/caffe.proto编译成的</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">message</span> <span class="n">LayerParameter</span> <span class="p">{</span>
+  <span class="n">optional</span> <span class="n">string</span> <span class="n">name</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="o">//</span> <span class="n">the</span> <span class="n">layer</span> <span class="n">name</span> <span class="n">optianl表示必须填写</span>
+  <span class="n">optional</span> <span class="n">string</span> <span class="nb">type</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="o">//</span> <span class="n">the</span> <span class="n">layer</span> <span class="nb">type</span>
+  <span class="n">repeated</span> <span class="n">string</span> <span class="n">bottom</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="o">//</span> <span class="n">the</span> <span class="n">name</span> <span class="n">of</span> <span class="n">each</span> <span class="n">bottom</span> <span class="n">blob</span> <span class="n">repeated表示已重复</span>
+  <span class="n">repeated</span> <span class="n">string</span> <span class="n">top</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span> <span class="o">//</span> <span class="n">the</span> <span class="n">name</span> <span class="n">of</span> <span class="n">each</span> <span class="n">top</span> <span class="n">blob</span>
+  <span class="o">//</span> <span class="n">The</span> <span class="n">train</span> <span class="o">/</span> <span class="n">test</span> <span class="n">phase</span> <span class="k">for</span> <span class="n">computation</span><span class="o">.</span>
+  <span class="n">optional</span> <span class="n">Phase</span> <span class="n">phase</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+  <span class="o">//</span> <span class="n">The</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">weight</span> <span class="n">to</span> <span class="n">assign</span> <span class="n">each</span> <span class="n">top</span> <span class="n">blob</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">objective</span><span class="o">.</span>
+  <span class="o">//</span> <span class="n">Each</span> <span class="n">layer</span> <span class="n">assigns</span> <span class="n">a</span> <span class="n">default</span> <span class="n">value</span><span class="p">,</span> <span class="n">usually</span> <span class="n">of</span> <span class="n">either</span> <span class="mi">0</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="o">//</span> <span class="n">to</span> <span class="n">each</span> <span class="n">top</span> <span class="n">blob</span><span class="o">.</span>
+  <span class="n">repeated</span> <span class="nb">float</span> <span class="n">loss_weight</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+
+  <span class="o">//</span> <span class="n">Specifies</span> <span class="n">training</span> <span class="n">parameters</span> <span class="p">(</span><span class="n">multipliers</span> <span class="n">on</span> <span class="k">global</span> <span class="n">learning</span> <span class="n">constants</span><span class="p">,</span>
+  <span class="o">//</span> <span class="ow">and</span> <span class="n">the</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">other</span> <span class="n">settings</span> <span class="n">used</span> <span class="k">for</span> <span class="n">weight</span> <span class="n">sharing</span><span class="p">)</span><span class="o">.</span>
+  <span class="n">repeated</span> <span class="n">ParamSpec</span> <span class="n">param</span> <span class="o">=</span> <span class="mi">6</span><span class="p">;</span>
+
+  <span class="o">//</span> <span class="n">The</span> <span class="n">blobs</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">numeric</span> <span class="n">parameters</span> <span class="n">of</span> <span class="n">the</span> <span class="n">layer</span><span class="o">.</span>
+  <span class="n">repeated</span> <span class="n">BlobProto</span> <span class="n">blobs</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+  <span class="o">...</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>成员函数<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">explicit</span> <span class="n">Layer</span><span class="p">(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">)</span>
+    <span class="p">:</span> <span class="n">layer_param_</span><span class="p">(</span><span class="n">param</span><span class="p">),</span> <span class="n">is_shared_</span><span class="p">(</span><span class="n">false</span><span class="p">)</span> <span class="p">{</span>
+      <span class="o">//</span> <span class="n">Set</span> <span class="n">phase</span> <span class="ow">and</span> <span class="n">copy</span> <span class="n">blobs</span> <span class="p">(</span><span class="k">if</span> <span class="n">there</span> <span class="n">are</span> <span class="nb">any</span><span class="p">)</span><span class="o">.</span>
+      <span class="n">phase_</span> <span class="o">=</span> <span class="n">param</span><span class="o">.</span><span class="n">phase</span><span class="p">();</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">layer_param_</span><span class="o">.</span><span class="n">blobs_size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">blobs_</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">layer_param_</span><span class="o">.</span><span class="n">blobs_size</span><span class="p">());</span>
+        <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">layer_param_</span><span class="o">.</span><span class="n">blobs_size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+          <span class="n">blobs_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">new</span> <span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">());</span>
+          <span class="n">blobs_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">FromProto</span><span class="p">(</span><span class="n">layer_param_</span><span class="o">.</span><span class="n">blobs</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="n">virtual</span> <span class="o">~</span><span class="n">Layer</span><span class="p">()</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>构造函数。首先对phase_赋值，表明当前网络是train还是test。在参数的blobs大小大于零情况下，blobs_（一个类型为指向blob类的shared_ptr指针的vector）申请空间，然后将传入的layer_param中的blob拷贝过来。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">SetUp</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">,</span>
+      <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">InitMutex</span><span class="p">();</span>
+    <span class="n">CheckBlobCounts</span><span class="p">(</span><span class="n">bottom</span><span class="p">,</span> <span class="n">top</span><span class="p">);</span>
+    <span class="n">LayerSetUp</span><span class="p">(</span><span class="n">bottom</span><span class="p">,</span> <span class="n">top</span><span class="p">);</span>
+    <span class="n">Reshape</span><span class="p">(</span><span class="n">bottom</span><span class="p">,</span> <span class="n">top</span><span class="p">);</span>
+    <span class="n">SetLossWeights</span><span class="p">(</span><span class="n">top</span><span class="p">);</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>Setup函数。首先check 这个bottom和top的blob是否正确，再调用Layersetup对每一具体的层做进一步设置，之后再做reshape来设置top blobs和internal buffer。最后再设置loss weight multiplier 的blob对每一个非零的loss和weight，一般这个方法被继承之后是不会被重写的。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">virtual</span> <span class="n">void</span> <span class="n">LayerSetUp</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">,</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">)</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">ShareInParallel</span><span class="p">()</span>
+<span class="n">inline</span> <span class="nb">bool</span> <span class="n">IsShared</span><span class="p">()</span> <span class="n">const</span>
+<span class="n">inline</span> <span class="n">void</span> <span class="n">SetShared</span><span class="p">(</span><span class="nb">bool</span> <span class="n">is_shared</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>LayerSetup就是对具体某一个layer的setup,被上面的那个函数所调用。</li>
+<li>ShareInParallel和IsShared和SetShared分别是用来返回并行状态和获得这一layer是否被多个nets所共享，默认是除了data layer都是关闭的。在多个GPU下的Train阶段以及share是true的情况下,is_shared将会被置成true。</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">virtual</span> <span class="n">void</span> <span class="n">Reshape</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">,</span>
+      <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Reshape函数。它主要是layer用来根据输入的blob调节Internal buffer(内部缓冲区)以及输出的Blob。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">inline</span> <span class="n">Dtype</span> <span class="n">Forward</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">,</span>
+      <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>重要函数 Forward</strong> 这是一个装饰器，继承之后再调用其相应的forward_cpu或者forward_gpu，根据输入的input data blob计算相应的output data blob，同时会得到这一层layer的total loss.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">inline</span> <span class="n">void</span> <span class="n">Backward</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">,</span>
+      <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;&amp;</span> <span class="n">propagate_down</span><span class="p">,</span>
+      <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>重要函数 BackWard</strong>  和Forward类似，也是一个装饰器，实现正向传播。实现的是反向传播，也就是给定top blob和error gradient计算得到bottom的error gradient。其输入是 top blobs ，在top blobs里面的diff存储的就是其相应的error gradients。其中propagate_down这个参数跟Bottom的长度是一样的，每一个Index用来指定是否需要反向传播error gradients 到对应的bottom blob。而bottom 这里面的diff 区域存放的就是BackWard计算出来相应的gradient error.</p>
+<ul class="simple">
+<li>如果自己你要实现一个自己的Layer，主要实现的就是Forward_cpu和Backward_cpu 以及gpu（可选）。</li>
+<li>可以参考何凯明的深度残差网络https://github.com/KaimingHe/deep-residual-networks</li>
+<li>想对正向传播和反向传播原理详细了解的童鞋可以去看一下人工神经网络设计</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="o">&gt;&amp;</span> <span class="n">blobs</span><span class="p">()</span>\\<span class="n">返回blobs</span>
+<span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">layer_param</span><span class="p">()</span> \\<span class="n">返回layer</span> <span class="n">的参数parameter</span>
+<span class="n">virtual</span> <span class="n">void</span> <span class="n">ToProto</span><span class="p">(</span><span class="n">LayerParameter</span><span class="o">*</span> <span class="n">param</span><span class="p">,</span> <span class="nb">bool</span> <span class="n">write_diff</span> <span class="o">=</span> <span class="n">false</span><span class="p">)</span>\\<span class="n">将层参数写到Protobuffer里</span>
+<span class="n">inline</span> <span class="n">Dtype</span> <span class="n">loss</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">top_index</span><span class="p">)</span> <span class="n">const</span> \\<span class="n">给定index返回相应的scalar</span> <span class="n">loss</span>
+<span class="n">inline</span> <span class="n">void</span> <span class="n">set_loss</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">top_index</span><span class="p">,</span> <span class="n">const</span> <span class="n">Dtype</span> <span class="n">value</span><span class="p">)</span>\\<span class="n">给定Index设置loss</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="n">const</span> <span class="n">char</span><span class="o">*</span> <span class="nb">type</span><span class="p">()</span>\\<span class="n">返回layer的type</span>
+</pre></div>
+</div>
+<p>工具类函数</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">virtual</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">ExactNumBottomBlobs</span><span class="p">()</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">MinBottomBlobs</span><span class="p">()</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">MaxBottomBlobs</span><span class="p">()</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">ExactNumTopBlobs</span><span class="p">()</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">MinTopBlobs</span><span class="p">()</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="nb">int</span> <span class="n">MaxTopBlobs</span><span class="p">()</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">EqualNumBottomTopBlobs</span><span class="p">()</span>
+<span class="n">virtual</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">AutoTopBlobs</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>主要获得bottom blob或者top blob的数量状态。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">virtual</span> <span class="n">inline</span> <span class="nb">bool</span> <span class="n">AllowForceBackward</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">bottom_index</span><span class="p">)</span>
+<span class="n">inline</span> <span class="nb">bool</span> <span class="n">param_propagate_down</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">param_id</span><span class="p">)</span>
+<span class="n">inline</span> <span class="n">void</span> <span class="n">set_param_propagate_down</span><span class="p">(</span><span class="n">const</span> <span class="nb">int</span> <span class="n">param_id</span><span class="p">,</span> <span class="n">const</span> <span class="nb">bool</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>AllowforceBackward用来设置是否强制梯度返回，因为有些层其实不需要梯度信息。后面两个函数分别查看以及设置是是否需要计算梯度。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">virtual</span> <span class="n">void</span> <span class="n">Forward_cpu</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">)</span>
+<span class="n">virtual</span> <span class="n">void</span> <span class="n">Forward_gpu</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">)</span>
+<span class="n">virtual</span> <span class="n">void</span> <span class="n">Backward_cpu</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">,</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;&amp;</span> <span class="n">propagate_down</span><span class="p">,</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">virtual</span> <span class="n">void</span> <span class="n">Backward_gpu</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">,</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="nb">bool</span><span class="o">&gt;&amp;</span> <span class="n">propagate_down</span><span class="p">,</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>计算cpu和gpu模式下的正向和反向传播实现。被Forward、Backward两个装饰器调用。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">virtual</span> <span class="n">void</span> <span class="n">CheckBlobCounts</span><span class="p">(</span><span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">bottom</span><span class="p">,</span> <span class="n">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;*&gt;&amp;</span> <span class="n">top</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>这个函数被setup调用，主要是check bottom和top 的blob是否match，这里面用了上面提到的ExactBottomBlobs（）等函数</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd>inline void SetLossWeights(const vector&lt;Blob&lt;Dtype&gt;*&gt;&amp; top)</dd>
+</dl>
+<p>SetLoss是非常重要的一个步骤，是被SetUp调用来初始化top bottom的weights，并且存储非零的loss weights在diff blob里面。</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h2>Layer的工厂方法<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>工厂方法是连接所有模块的关键。</p>
+<div class="section" id="id7">
+<h3>源码文件<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li>include/layer_factory.hpp</li>
+<li>src/layer_factory.cpp</li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h3>整体概览<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>layer_factory.hpp</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">template</span> <span class="o">&lt;</span><span class="n">typename</span> <span class="n">Dtype</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">LayerRegistry</span> <span class="p">{</span>
+ <span class="n">public</span><span class="p">:</span>
+  <span class="n">typedef</span> <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="p">(</span><span class="o">*</span><span class="n">Creator</span><span class="p">)(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span><span class="p">);</span>
+  <span class="n">typedef</span> <span class="n">std</span><span class="p">::</span><span class="nb">map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span> <span class="n">Creator</span><span class="o">&gt;</span> <span class="n">CreatorRegistry</span><span class="p">;</span>
+  <span class="n">static</span> <span class="n">CreatorRegistry</span><span class="o">&amp;</span> <span class="n">Registry</span><span class="p">()</span>
+  <span class="n">static</span> <span class="n">void</span> <span class="n">AddCreator</span><span class="p">(</span><span class="n">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="nb">type</span><span class="p">,</span> <span class="n">Creator</span> <span class="n">creator</span><span class="p">)</span>
+  <span class="n">static</span> <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">CreateLayer</span><span class="p">(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">)</span>
+  <span class="n">static</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span> <span class="n">LayerTypeList</span><span class="p">()</span>
+ <span class="n">private</span><span class="p">:</span>
+  <span class="o">//</span> <span class="n">Layer</span> <span class="n">registry</span> <span class="n">should</span> <span class="n">never</span> <span class="n">be</span> <span class="n">instantiated</span> <span class="o">-</span> <span class="n">everything</span> <span class="ow">is</span> <span class="n">done</span> <span class="k">with</span> <span class="n">its</span>
+  <span class="o">//</span> <span class="n">static</span> <span class="n">variables</span><span class="o">.</span>
+  <span class="n">LayerRegistry</span><span class="p">()</span>
+  <span class="n">static</span> <span class="n">string</span> <span class="n">LayerTypeListString</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="n">template</span> <span class="o">&lt;</span><span class="n">typename</span> <span class="n">Dtype</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">LayerRegisterer</span> <span class="p">{</span>
+ <span class="n">public</span><span class="p">:</span>
+  <span class="n">LayerRegisterer</span><span class="p">(</span><span class="n">const</span> <span class="n">string</span><span class="o">&amp;</span> <span class="nb">type</span><span class="p">,</span>
+                  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="p">(</span><span class="o">*</span><span class="n">creator</span><span class="p">)(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="o">//</span> <span class="n">LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;Registering layer type: &quot;</span> <span class="o">&lt;&lt;</span> <span class="nb">type</span><span class="p">;</span>
+    <span class="n">LayerRegistry</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">::</span><span class="n">AddCreator</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">creator</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="c1">#define REGISTER_LAYER_CREATOR(type, creator)                                  \</span>
+  <span class="n">static</span> <span class="n">LayerRegisterer</span><span class="o">&lt;</span><span class="nb">float</span><span class="o">&gt;</span> <span class="n">g_creator_f_</span><span class="c1">##type(#type, creator&lt;float&gt;);     \</span>
+  <span class="n">static</span> <span class="n">LayerRegisterer</span><span class="o">&lt;</span><span class="n">double</span><span class="o">&gt;</span> <span class="n">g_creator_d_</span><span class="c1">##type(#type, creator&lt;double&gt;)    \</span>
+
+<span class="c1">#define REGISTER_LAYER_CLASS(type)                                             \</span>
+  <span class="n">template</span> <span class="o">&lt;</span><span class="n">typename</span> <span class="n">Dtype</span><span class="o">&gt;</span>                                                    \
+  <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">Creator_</span><span class="c1">##type##Layer(const LayerParameter&amp; param) \</span>
+  <span class="p">{</span>                                                                            \
+    <span class="k">return</span> <span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span><span class="p">(</span><span class="n">new</span> <span class="nb">type</span><span class="c1">##Layer&lt;Dtype&gt;(param));           \</span>
+  <span class="p">}</span>                                                                            \
+  <span class="n">REGISTER_LAYER_CREATOR</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">Creator_</span><span class="c1">##type##Layer)</span>
+</pre></div>
+</div>
+<p>layer_factory.cpp</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">GetConvolutionLayer</span><span class="p">(</span>
+    <span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span>
+<span class="n">REGISTER_LAYER_CREATOR</span><span class="p">(</span><span class="n">Convolution</span><span class="p">,</span> <span class="n">GetConvolutionLayer</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">GetPoolingLayer</span><span class="p">(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span>
+<span class="n">REGISTER_LAYER_CREATOR</span><span class="p">(</span><span class="n">Pooling</span><span class="p">,</span> <span class="n">GetPoolingLayer</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">GetLRNLayer</span><span class="p">(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span>
+<span class="n">REGISTER_LAYER_CREATOR</span><span class="p">(</span><span class="n">LRN</span><span class="p">,</span> <span class="n">GetLRNLayer</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">GetReLULayer</span><span class="p">(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span>
+<span class="n">REGISTER_LAYER_CREATOR</span><span class="p">(</span><span class="n">ReLU</span><span class="p">,</span> <span class="n">GetReLULayer</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">GetSoftmaxLayer</span>
+<span class="n">REGISTER_LAYER_CREATOR</span><span class="p">(</span><span class="n">Softmax</span><span class="p">,</span> <span class="n">GetSoftmaxLayer</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">GetTanHLayer</span><span class="p">(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">)</span>
+<span class="n">REGISTER_LAYER_CREATOR</span><span class="p">(</span><span class="n">TanH</span><span class="p">,</span> <span class="n">GetTanHLayer</span><span class="p">);</span>
+<span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Layer</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span> <span class="o">&gt;</span> <span class="n">GetPythonLayer</span><span class="p">(</span><span class="n">const</span> <span class="n">LayerParameter</span><span class="o">&amp;</span> <span class="n">param</span>
+<span class="n">REGISTER_LAYER_CREATOR</span><span class="p">(</span><span class="n">Python</span><span class="p">,</span> <span class="n">GetPythonLayer</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>分析<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<p>Layer的创建使用的是工厂模式。</p>
+<p>REGISTER_LAYER_CREATOR是一个宏函数，负责将创建层的函数放入LayerRegistry。
+layer_factory.cpp使用REGISTER_LAYER_CREATOR将主要的Layer进行了注册。</p>
+</div>
+</div>
+<div class="section" id="id10">
+<h2>Layer的具体实现<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p>后面有时间详细讲</p>
+</div>
+<div class="section" id="id11">
+<h2>参考<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.cnblogs.com/louyihang-loves-baiyan/">http://www.cnblogs.com/louyihang-loves-baiyan/</a></li>
+<li><a class="reference external" href="https://www.zhihu.com/question/27982282/answer/39350629">https://www.zhihu.com/question/27982282/answer/39350629</a></li>
+<li><a class="reference external" href="http://blog.csdn.net/iamzhangzhuping/article/details/50499881">http://blog.csdn.net/iamzhangzhuping/article/details/50499881</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Caffe源码之Net.html" class="btn btn-neutral float-right" title="Caffe的Net" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Caffe源码之Blob.html" class="btn btn-neutral" title="Caffe的Blob" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

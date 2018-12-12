@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Caffe源码的前向传播与后向传播 &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="实验室深度学习简介" href="../caffe_DP_lecture/index.html" />
+    <link rel="prev" title="Caffe应用之人脸识别例子" href="Caffe应用之人脸识别.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../implement/index.html">实现</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">经验</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Caffe源码分析及例子</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Windows平台安装Caffe.html">Windows平台安装Caffe</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码结构.html">Caffe源码结构</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Blob.html">Caffe的Blob</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Layer.html">Caffe的Layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Net.html">Caffe的Net</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe源码之Solver.html">Caffe的Solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Caffe应用之人脸识别.html">Caffe应用之人脸识别例子</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Caffe源码的前向传播与后向传播</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../caffe_DP_lecture/index.html">实验室深度学习简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../study_style/index.html">学习方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">经验</a> &raquo;</li>
+        
+          <li><a href="index.html">Caffe源码分析及例子</a> &raquo;</li>
+        
+      <li>Caffe源码的前向传播与后向传播</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/experience/caffe_code/Caffe源码的前向传播与后向传播.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="caffe">
+<h1>Caffe源码的前向传播与后向传播<a class="headerlink" href="#caffe" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id1">
+<h2>前言<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>BP神经网络</p>
+<img alt="../../../_images/BP_3.jpg" src="../../../_images/BP_3.jpg" />
+<img alt="../../../_images/BP_2.jpg" src="../../../_images/BP_2.jpg" />
+<img alt="../../../_images/BP_1.jpg" src="../../../_images/BP_1.jpg" />
+<p>Caffe训练阶段代码关系</p>
+<img alt="../../../_images/caffe_code_process.png" src="../../../_images/caffe_code_process.png" />
+</div>
+<div class="section" id="id2">
+<h2>概述<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>前向传播和后向传播是深度学习的精髓。也是神经网络的基础。</p>
+<p>前向传播比较简单请看《Caffe应用之人脸识别》</p>
+<p>分类的CNN是有监督的，就是在最后一层计算分类结果的loss，然后利用这个loss对整个网络进行更新，更新的关键就是计算梯度和偏置的导数dW和db，而Back Propagation主要就是为了解决前面的层的dW不容易计算的问题，具体是将loss通过一个残差delta一层一层往前传，因此无论是全连接层还是卷积层，全部是有监督的。</p>
+<p>从简单的全连接层入手</p>
+</div>
+<div class="section" id="id3">
+<h2>全连接层例子<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>打开Inner_product_layer.cpp，里面的Backward_cpu函数实现了反向传播的过程。（如果使用的是GPU，则会调用Inner_product_layer.cu文件里的Backward_gpu函数，实现过程是类似的）</p>
+<p>先通过LayerSetUp函数明确几个变量：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N_</span> <span class="o">=</span> <span class="n">num_output</span><span class="p">;</span>
+<span class="n">K_</span> <span class="o">=</span> <span class="n">bottom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">(</span><span class="n">axis</span><span class="p">);</span>
+<span class="n">M_</span> <span class="o">=</span> <span class="n">bottom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>bottom表示该层的输入，top表示该层的输出。</p>
+<p>N_表示输出的特征维数，即输出的神经元的个数。</p>
+<p>K_表示输入的样本的特征维数，即输入的神经元的个数。</p>
+<p>M_表示样本个数。
+因此全连接层的W维数就是N_×K_，b维数就是N_×1。
+n×c×h×w格式，全连接层的W维数就是N_×K_×1×1，b维数就是N_×1×1×1，</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">weight_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">N_</span><span class="p">;</span>
+<span class="n">weight_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">K_</span><span class="p">;</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;</span> <span class="n">bias_shape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N_</span><span class="p">);</span>
+<span class="n">this</span><span class="o">-&gt;</span><span class="n">blobs_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">new</span> <span class="n">Blob</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">(</span><span class="n">bias_shape</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>下面一行一行看Backward_cpu函数的代码，整个更新过程大概可以分成三步：</p>
+<p><strong>第一步</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">caffe_cpu_gemm</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">(</span><span class="n">CblasTrans</span><span class="p">,</span> <span class="n">CblasNoTrans</span><span class="p">,</span> <span class="n">N_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">M_</span><span class="p">,</span> <span class="p">(</span><span class="n">Dtype</span><span class="p">)</span><span class="mf">1.</span><span class="p">,</span>
+        <span class="n">top_diff</span><span class="p">,</span> <span class="n">bottom_data</span><span class="p">,</span> <span class="p">(</span><span class="n">Dtype</span><span class="p">)</span><span class="mf">0.</span><span class="p">,</span> <span class="n">this</span><span class="o">-&gt;</span><span class="n">blobs_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">mutable_cpu_diff</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>这一句是为了计算dW，对应公式就是</p>
+<img alt="../../../_images/caffe_code_front_back_formula_1.jpg" src="../../../_images/caffe_code_front_back_formula_1.jpg" />
+<p>其中的bottom_data对应的是a，即输入的神经元激活值，维数为K_×N_，top_diff对应的是delta，维数是M_×N_，而caffe_cpu_gemm函数是对blas中的函数进行封装，实现了一个N_×M_的矩阵与一个M_×K_的矩阵相乘（注意此处乘之前对top_diff进行了转置）。相乘得到的结果保存于blobs_[0]-&gt;mutable_cpu_diff()，对应dW。</p>
+<p><strong>第二步</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">caffe_cpu_gemv</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">(</span><span class="n">CblasTrans</span><span class="p">,</span> <span class="n">M_</span><span class="p">,</span> <span class="n">N_</span><span class="p">,</span> <span class="p">(</span><span class="n">Dtype</span><span class="p">)</span><span class="mf">1.</span><span class="p">,</span> <span class="n">top_diff</span><span class="p">,</span>
+        <span class="n">bias_multiplier_</span><span class="o">.</span><span class="n">cpu_data</span><span class="p">(),</span> <span class="p">(</span><span class="n">Dtype</span><span class="p">)</span><span class="mf">0.</span><span class="p">,</span>
+        <span class="n">this</span><span class="o">-&gt;</span><span class="n">blobs_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">mutable_cpu_diff</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>这一句是为了计算db，对应公式为</p>
+<img alt="../../../_images/caffe_code_front_back_formula_2.jpg" src="../../../_images/caffe_code_front_back_formula_2.jpg" />
+<p>caffe_cpu_gemv函数实现了一个M_×N_的矩阵与N_×1的向量进行乘积，其实主要实现的是对delta进行了一下转置，就得到了db的值，保存于blobs_[1]-&gt;mutable_cpu_diff()中。<a href="#id5"><span class="problematic" id="id6">此处的与bias_multiplier_</span></a>.cpu_data()相乘是实现对M_个样本求和，<a href="#id7"><span class="problematic" id="id8">bias_multiplier_</span></a>.cpu_data()是全1向量，从公式上看应该是取平均的，但是从loss传过来时已经取过平均了，此处直接求和即可。</p>
+<p><strong>第三步</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">caffe_cpu_gemm</span><span class="o">&lt;</span><span class="n">Dtype</span><span class="o">&gt;</span><span class="p">(</span><span class="n">CblasNoTrans</span><span class="p">,</span> <span class="n">CblasNoTrans</span><span class="p">,</span> <span class="n">M_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">N_</span><span class="p">,</span> <span class="p">(</span><span class="n">Dtype</span><span class="p">)</span><span class="mf">1.</span><span class="p">,</span>
+        <span class="n">top_diff</span><span class="p">,</span> <span class="n">this</span><span class="o">-&gt;</span><span class="n">blobs_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">cpu_data</span><span class="p">(),</span> <span class="p">(</span><span class="n">Dtype</span><span class="p">)</span><span class="mf">0.</span><span class="p">,</span>
+        <span class="n">bottom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">mutable_cpu_diff</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>这一句是为了利用后面层传过来的delta_l+1计算本层的delta_l，对应公式为</p>
+<img alt="../../../_images/caffe_code_front_back_formula_3.jpg" src="../../../_images/caffe_code_front_back_formula_3.jpg" />
+<p>主要Inner_product层里面并没有激活函数，因此没有乘f’，与f’的相乘写在ReLU层的Backward函数里了，因此这一句里只有W和delta_l+1相乘。blobs_[0]-&gt;cpu_data()对应W，维度是N_×K_，bottom[0]-&gt;mutable_cpu_diff()是本层的delta_l，维度是M_×K_。</p>
+<p>** 第四步**</p>
+<p>Backward_cpu函数终于结束了。但是更新其实没结束，Backward_cpu函数里只计算了dW，db，delta，并没有对W和b进行更新.caffe里的反向传播过程只是计算每层的梯度的导数并存储，把所有层都计算完之后，在solver.cpp里面统一对整个网络进行了更新。具体是在step函数里先通过ComputeUpdateValue把learning rate、momentum、weight_decay什么的都算好，然后调用了Net.cpp的update函数逐层更新，对应公式就是：</p>
+<img alt="../../../_images/caffe_code_front_back_formula_4.jpg" src="../../../_images/caffe_code_front_back_formula_4.jpg" />
+</div>
+<div class="section" id="id4">
+<h2>参考<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.cnblogs.com/louyihang-loves-baiyan/">http://www.cnblogs.com/louyihang-loves-baiyan/</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../caffe_DP_lecture/index.html" class="btn btn-neutral float-right" title="实验室深度学习简介" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Caffe应用之人脸识别.html" class="btn btn-neutral" title="Caffe应用之人脸识别例子" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

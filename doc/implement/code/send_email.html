@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>发送email &mdash; 李华清的博客 1.0-dev 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="wget批量下载" href="wget_download.html" />
+    <link rel="prev" title="代码实现" href="index.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> 李华清的博客
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../blog/index.html">博客</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">文档</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../horizon/index.html">眼界</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../theory/index.html">理论</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">实现</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">代码实现</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">发送email</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wget_download.html">wget批量下载</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../imglab_construction/index.html">图像所实验室建设</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../experience/index.html">经验</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">李华清的博客</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">文档</a> &raquo;</li>
+        
+          <li><a href="../index.html">实现</a> &raquo;</li>
+        
+          <li><a href="index.html">代码实现</a> &raquo;</li>
+        
+      <li>发送email</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/doc/implement/code/send_email.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="email">
+<h1>发送email<a class="headerlink" href="#email" title="永久链接至标题">¶</a></h1>
+<p>使用python发送邮件。</p>
+<div class="section" id="id1">
+<h2>思路<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>申请邮箱，发送邮件python代码，生成exe</p>
+</div>
+<div class="section" id="id2">
+<h2>依赖<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li>python3</li>
+<li>smtplib（邮箱模块）</li>
+<li>argparse（命令行解析）</li>
+<li>pyinstaller（生成windows平台的exe）</li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>代码<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p><a href="#id4"><span class="problematic" id="id5">``</span></a>`
+#!/usr/bin/python3</p>
+<p>import smtplib
+from email.mime.text import MIMEText
+from email.header import Header
+import argparse</p>
+<dl class="docutils">
+<dt>def send_mail(mail_host, mail_user, mail_pass, sender, receiver, subject, contents):</dt>
+<dd><p class="first">&quot;&quot;&quot;
+发送邮件
+:param mail_host: smtp地址，例如smtp.139.com
+:param mail_user: 用户名
+:param mail_pass: 邮箱密码
+:param sender: 发送人，例如xxx&#64;139.com
+:param receiver: 接收人，例如xxx&#64;139.com
+:param subject: 主题
+:param contents: 内容
+:return: 是否发送成功
+&quot;&quot;&quot;
+mail_user = str(mail_user)
+mail_pass = str(mail_pass)
+subject = str(subject)
+contents = str(contents)</p>
+<p>message = MIMEText(contents, 'plain', 'utf-8')
+message['From'] = Header(sender, 'utf-8')
+message['To'] = Header(receiver, 'utf-8')
+message['Subject'] = Header(subject, 'utf-8')
+try:</p>
+<blockquote>
+<div>smtp_obj = smtplib.SMTP()
+smtp_obj.connect(mail_host, 25)  # 25 为 SMTP 端口号
+smtp_obj.login(mail_user, mail_pass)
+smtp_obj.sendmail(sender, receiver, message.as_string())
+print('Send Success')
+return True</div></blockquote>
+<dl class="last docutils">
+<dt>except smtplib.SMTPException:</dt>
+<dd>print('Send False')
+return False</dd>
+</dl>
+</dd>
+<dt>if __name__ == '__main__':</dt>
+<dd>parser = argparse.ArgumentParser(description='发送邮件')
+parser.add_argument('--mail_host',  help='smtp地址，例如smtp.139.com', type=str)
+parser.add_argument('--mail_user', help='用户名', type=str)
+parser.add_argument('--mail_pass', help='邮箱密码', type=str)
+parser.add_argument('--sender', help='发送人，例如xxx&#64;139.com', type=str)
+parser.add_argument('--receiver', help='接收人，例如xxx&#64;139.com', type=str)
+parser.add_argument('--subject', help='主题', type=str)
+parser.add_argument('--contents', help='内容', type=str)
+args = parser.parse_args()
+send_mail(args.mail_host, args.mail_user, args.mail_pass, args.sender, args.receiver, args.subject, args.contents)</dd>
+</dl>
+<p><a href="#id6"><span class="problematic" id="id7">``</span></a><a href="#id8"><span class="problematic" id="id9">`</span></a></p>
+</div>
+<div class="section" id="id10">
+<h2>编译<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">C:\Anaconda3\Scripts&gt;pyinstaller.exe</span> <span class="pre">-F</span> <span class="pre">-c</span> <span class="pre">send_email.py</span>
+<span class="pre">`</span></code>
+-F作用是生成的exe不需要其他依赖。</p>
+<p>最后生成send_email.exe</p>
+</div>
+<div class="section" id="id11">
+<h2>使用<a class="headerlink" href="#id11" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">C:\Anaconda3\Scripts\dist&gt;send_email.exe</span> <span class="pre">--help</span>
+<span class="pre">`</span></code>
+可以得到帮助</p>
+</div>
+<div class="section" id="id12">
+<h2>其他问题<a class="headerlink" href="#id12" title="永久链接至标题">¶</a></h2>
+<p>如果使用fire模块解析命令行参数，pyinstaller编译出来的exe特别大200MB+。故使用argparse。</p>
+<p>中文乱码问题。如果使用批处理调用send_email且批处理包含中文，批处理文件的格式应该改为ANSI格式。</p>
+<p>有时不在常用地登陆139邮箱需要验证。需要在该个地方用电脑或者手机登陆过后，再运行该程序。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="wget_download.html" class="btn btn-neutral float-right" title="wget批量下载" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="代码实现" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, linkhqli@163.com.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0-dev',
+            LANGUAGE:'zh',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
